@@ -19,6 +19,7 @@
             {% for thanker in thankers_thankees_counts|keys %}
                 <td class="recipient" data-recipient-index="{{ loop.index0 }}"><div class="alibi-div">{{ thanker|e }}</div></td>
             {% endfor %}
+            <td class="recipient sum donor-sum" data-recipient-index="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Sum</div></td>
         </tr>
         {% for thanker in thankers_thankees_counts|keys %}
             <tr>
@@ -33,7 +34,27 @@
                         data-recipient-index="{{ loop.index0 }}"
                     ><div class="alibi-div">{{ thankers_thankees_counts[thanker][thankee]|e }}</div></td>
                 {% endfor %}
+                <td
+                    class="thanks-count sum donor-sum {% if thankers_totals[thanker] == 0 %}zero{% else %}nonzero{% endif %}"
+                    data-donor-index="{{ loop.index0 }}"
+                    data-recipient-index="{{ thankers_thankees_counts|length }}"
+                ><div class="alibi-div">{{ thankers_totals[thanker]|e }}</div></td>
             </tr>
         {% endfor %}
+        <tr>
+            <td class="donor sum recipient-sum" data-donor-index="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Sum</div></td>
+            {% for thankee in thankers_thankees_counts|keys %}
+                <td
+                    class="thanks-count sum recipient-sum {% if thankees_totals[thankee] == 0 %}zero{% else %}nonzero{% endif %}"
+                    data-donor-index="{{ thankers_thankees_counts|length }}"
+                    data-recipient-index="{{ loop.index0 }}"
+                ><div class="alibi-div">{{ thankees_totals[thankee]|e }}</div></td>
+            {% endfor %}
+            <td
+                class="thanks-count sum donor-sum recipient-sum total-sum {% if grand_total == 0 %}zero{% else %}nonzero{% endif %}"
+                data-donor-index="{{ thankers_thankees_counts|length }}"
+                data-recipient-index="{{ thankers_thankees_counts|length }}"
+            ><div class="alibi-div">{{ grand_total|e }}</div></td>
+        </tr>
     </table>
 {% endblock %}

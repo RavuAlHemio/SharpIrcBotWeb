@@ -29,6 +29,8 @@ class ThanksController extends Controller
         $arrPairCounts = $objQuery->getResult();
 
         $arrThankersToThankeesToCounts = [];
+        $arrThankersToTotalCounts = [];
+        $arrThankeesToTotalCounts = [];
 
         // find all nicks
         $arrNicks = [];
@@ -53,16 +55,29 @@ class ThanksController extends Controller
             {
                 $arrThankersToThankeesToCounts[$strThanker][$strThankee] = 0;
             }
+            $arrThankersToTotalCounts[$strThanker] = 0;
+            $arrThankeesToTotalCounts[$strThanker] = 0;
         }
+        $intTotalSum = 0;
 
         // populate with actual data
         foreach ($arrPairCounts as $arrPairCount)
         {
-            $arrThankersToThankeesToCounts[$arrPairCount['thanker']][$arrPairCount['thankee']] = $arrPairCount['thankcount'];
+            $strThanker = $arrPairCount['thanker'];
+            $strThankee = $arrPairCount['thankee'];
+            $intThankCount = $arrPairCount['thankcount'];
+
+            $arrThankersToThankeesToCounts[$strThanker][$strThankee] = $intThankCount;
+            $arrThankersToTotalCounts[$strThanker] += $intThankCount;
+            $arrThankeesToTotalCounts[$strThankee] += $intThankCount;
+            $intTotalSum += $intThankCount;
         }
 
         return $this->render('@RavuAlHemioSharpIrcBotWeb/thanks/thanksgrid.html.twig', [
-            'thankers_thankees_counts' => $arrThankersToThankeesToCounts
+            'thankers_thankees_counts' => $arrThankersToThankeesToCounts,
+            'thankers_totals' => $arrThankersToTotalCounts,
+            'thankees_totals' => $arrThankeesToTotalCounts,
+            'grand_total' => $intTotalSum
         ]);
     }
 }
