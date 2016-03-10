@@ -14,12 +14,12 @@ class QuotesController extends Controller
         $objQuery = $objEM->createQuery('
             SELECT
                 q,
-                COUNT(qv.numID)
+                SUM(qv.intPoints) points
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:Quote q
                 JOIN q.arrVotes qv
             ORDER BY
-                COUNT(qv.numID)
+                points
         ');
         $arrQuotes = $objQuery->getResult();
 
