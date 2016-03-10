@@ -32,7 +32,7 @@ class QuotesController extends Controller
         {
             /** @var Quote $objQuote */
             $objQuote = $arrQuoteAndPoints[0];
-            $intPoints = $arrQuoteAndPoints[1];
+            $intPoints = $arrQuoteAndPoints['points'];
 
             switch ($objQuote->strMessageType)
             {
