@@ -3,7 +3,7 @@
 {% block title %}Top Quotes{% endblock %}
 
 {% block body %}
-    <table>
+    <table class="top-quotes">
     {% for quote in topQuotes %}
         <tr>
             <td aria-label="score" class="score {% if quote.scoreChanged %}changed{% else %}unchanged{% endif %}">{{ quote.score|e }}</td>

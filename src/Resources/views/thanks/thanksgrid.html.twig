@@ -19,8 +19,8 @@
                     <td class="donor-header" rowspan="{{ thankers_thankees_counts|length }}">Donors</td>
                 {% endif %}
                 <td class="donor">{{ thanker|e }}</td>
-                {% for count in thankers_thankees_counts[thanker] %}
-                    <td class="thanks-count {% if count == 0 %}zero{% else %}nonzero{% endif %}">{{ count|e }}</td>
+                {% for thankee in thankers_thankees_counts[thanker]|keys %}
+                    <td class="thanks-count {% if thanker == thankee %} self{% endif %}{% if thankers_thankees_counts[thanker][thankee] == 0 %}zero{% else %}nonzero{% endif %}">{{ thankers_thankees_counts[thanker][thankee]|e }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
