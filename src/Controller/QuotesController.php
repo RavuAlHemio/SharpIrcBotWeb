@@ -50,9 +50,10 @@ class QuotesController extends Controller
 
             $arrTemplateQuotes[] = [
                 'score' => $intPoints,
-                'scoreChanged' => ($intPoints !== $intLastPoints),
+                'scoreChanged' => ($intLastPoints !== $intPoints),
                 'body' => $strBody
             ];
+            $intLastPoints = $intPoints;
         }
 
         return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/topquotes.html.twig', [
