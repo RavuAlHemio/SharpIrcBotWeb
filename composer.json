@@ -11,7 +11,9 @@
     ],
     "require": {
         "php": ">=7.0",
-        "symfony/framework-bundle": "^3.0"
+        "symfony/framework-bundle": "^3.0",
+        "doctrine/orm": "v2.5.4",
+        "doctrine/doctrine-bundle": "1.6.2"
     },
     "conflict": {
     },

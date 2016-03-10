@@ -1,0 +1,9 @@
+# no Composer, lock, dependencies
+composer.phar
+composer.lock
+vendor/
+
+# no IntelliJ project data
+*.iml
+*.ipr
+*.iws
