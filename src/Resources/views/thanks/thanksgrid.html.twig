@@ -13,25 +13,25 @@
     <table class="thanks-grid">
         <tr>
             <td class="top-left-spacer" colspan="2" rowspan="2"></td>
-            <td class="recipient-header" colspan="{{ thankers_thankees_counts|length }}">Recipient</td>
+            <td class="recipient-header" colspan="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Recipient</div></td>
         </tr>
         <tr>
             {% for thanker in thankers_thankees_counts|keys %}
-                <td class="recipient" data-recipient-index="{{ loop.index0 }}">{{ thanker|e }}</td>
+                <td class="recipient" data-recipient-index="{{ loop.index0 }}"><div class="alibi-div">{{ thanker|e }}</div></td>
             {% endfor %}
         </tr>
         {% for thanker in thankers_thankees_counts|keys %}
             <tr>
                 {% if loop.first %}
-                    <td class="donor-header" rowspan="{{ thankers_thankees_counts|length }}">Donor</td>
+                    <td class="donor-header" rowspan="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Donor</div></td>
                 {% endif %}
-                <td class="donor" data-donor-index="{{ loop.index0 }}">{{ thanker|e }}</td>
+                <td class="donor" data-donor-index="{{ loop.index0 }}"><div class="alibi-div">{{ thanker|e }}</div></td>
                 {% for thankee in thankers_thankees_counts[thanker]|keys %}
                     <td
                         class="thanks-count{% if thanker == thankee %} self{% endif %} {% if thankers_thankees_counts[thanker][thankee] == 0 %}zero{% else %}nonzero{% endif %}"
                         data-donor-index="{{ loop.parent.loop.index0 }}"
                         data-recipient-index="{{ loop.index0 }}"
-                    >{{ thankers_thankees_counts[thanker][thankee]|e }}</td>
+                    ><div class="alibi-div">{{ thankers_thankees_counts[thanker][thankee]|e }}</div></td>
                 {% endfor %}
             </tr>
         {% endfor %}
