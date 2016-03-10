@@ -17,6 +17,8 @@ class ThanksController extends Controller
                 COUNT(te.numID) thankcount
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:ThanksEntry te
+            WHERE
+                NOT te.blnDeleted
             GROUP BY
                 thanker,
                 thankee
