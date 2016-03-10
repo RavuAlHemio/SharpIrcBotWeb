@@ -1,0 +1,28 @@
+{% extends "@RavuAlHemioSharpIrcBotWeb/base.html.twig" %}
+
+{% block title %}Thanks{% endblock %}
+
+{% block body %}
+    <table class="thanks-grid">
+        <tr>
+            <td class="top-left-spacer" colspan="2" rowspan="2"></td>
+            <td class="recipient-header" colspan="{{ thankers_thankees_counts|length }}">Recipient</td>
+        </tr>
+        <tr>
+            {% for thanker in thankers_thankees_counts|keys %}
+                <td class="recipient">{{ thanker|e }}</td>
+            {% endfor %}
+        </tr>
+        {% for thanker in thankers_thankees_counts|keys %}
+            <tr>
+                {% if loop.first %}
+                    <td class="donor-header" rowspan="{{ thankers_thankees_counts|length }}">Donors</td>
+                {% endif %}
+                <td class="donor">{{ thanker|e }}</td>
+                {% for count in thankers_thankees_counts[thanker] %}
+                    <td class="thanks-count {% if count == 0 %}zero{% else %}nonzero{% endif %}">{{ count|e }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
