@@ -20,10 +20,11 @@ class QuoteVote
     public $numID;
 
     /**
-     * @var string
-     * @ORM\Column(name="quote_id", type="bigint")
+     * @var Quote
+     * @ORM\ManyToOne(targetEntity="Quote", inversedBy="arrVotes")
+     * @ORM\JoinColumn(name="quote_id", referencedColumnName="quote_id")
      */
-    public $numQuoteID;
+    public $objQuote;
 
     /**
      * @var string
@@ -36,10 +37,4 @@ class QuoteVote
      * @ORM\Column(name="points", type="smallint")
      */
     public $intPoints;
-
-    /**
-     * @var Quote
-     * @ORM\ManyToOne(targetEntity="Quote")
-     */
-    public $objQuote;
 }
