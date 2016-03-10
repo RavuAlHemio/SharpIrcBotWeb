@@ -22,7 +22,8 @@ class QuotesController extends Controller
             GROUP BY
                 q
             ORDER BY
-                points DESC
+                points DESC,
+                q.numID
         ');
         $arrQuotesAndPoints = $objQuery->getResult();
         $arrTemplateQuotes = [];
