@@ -3,9 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <title>{% block title %}Untitled Page{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}" />
 </head>
 <body>
     <main>
+        {% block pageh1 %}
+            <h1>{{ block('title') }}</h1>
+        {% endblock %}
         {% block body %}
         {% endblock %}
     </main>
