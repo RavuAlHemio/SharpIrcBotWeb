@@ -55,7 +55,7 @@ class QuotesController extends Controller
             ];
         }
 
-        return $this->render('quotes/topquotes.html.twig', [
+        return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/topquotes.html.twig', [
             'topQuotes' => $arrTemplateQuotes
         ]);
     }
