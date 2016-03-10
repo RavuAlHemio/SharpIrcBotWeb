@@ -18,6 +18,8 @@ class QuotesController extends Controller
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:Quote q
                 JOIN q.arrVotes qv
+            GROUP BY
+                q
             ORDER BY
                 points
         ');
