@@ -14,7 +14,7 @@ class ThanksController extends Controller
             SELECT
                 te.strThankerLowercase thanker,
                 te.strThankeeLowercase thankee,
-                COUNT(te.numID) count
+                COUNT(te.numID) thankcount
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:ThanksEntry te
             GROUP BY
@@ -56,7 +56,7 @@ class ThanksController extends Controller
         // populate with actual data
         foreach ($arrPairCounts as $arrPairCount)
         {
-            $arrThankersToThankeesToCounts[$arrPairCount['thanker']][$arrPairCount['thankee']] = $arrPairCount['count'];
+            $arrThankersToThankeesToCounts[$arrPairCount['thanker']][$arrPairCount['thankee']] = $arrPairCount['thankcount'];
         }
 
         return $this->render('@RavuAlHemioSharpIrcBotWeb/thanks/thanksgrid.html.twig', [
