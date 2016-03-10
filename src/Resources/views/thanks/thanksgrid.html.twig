@@ -13,7 +13,7 @@
     <table class="thanks-grid">
         <tr>
             <td class="top-left-spacer" colspan="2" rowspan="2"></td>
-            <td class="recipient-header" colspan="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Recipient</div></td>
+            <td class="recipient-header" colspan="{{ thankers_thankees_counts|length + 1 }}"><div class="alibi-div">Recipient</div></td>
         </tr>
         <tr>
             {% for thanker in thankers_thankees_counts|keys %}
@@ -24,7 +24,7 @@
         {% for thanker in thankers_thankees_counts|keys %}
             <tr>
                 {% if loop.first %}
-                    <td class="donor-header" rowspan="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Donor</div></td>
+                    <td class="donor-header" rowspan="{{ thankers_thankees_counts|length + 1 }}"><div class="alibi-div">Donor</div></td>
                 {% endif %}
                 <td class="donor" data-donor-index="{{ loop.index0 }}"><div class="alibi-div">{{ thanker|e }}</div></td>
                 {% for thankee in thankers_thankees_counts[thanker]|keys %}
