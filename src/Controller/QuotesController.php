@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class TopQuotesController extends Controller
+class QuotesController extends Controller
 {
     public function topQuotesAction()
     {
