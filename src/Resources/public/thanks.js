@@ -4,8 +4,8 @@ var Thanks;
         var countCells = document.querySelectorAll('table.thanks-grid td.thanks-count');
         for (var i = 0; i < countCells.length; ++i) {
             var countCell = countCells.item(i);
-            countCell.addEventListener('mouseover', mouseEnter);
-            countCell.addEventListener('mouseout', mouseExit);
+            countCell.addEventListener('mouseenter', mouseEnter);
+            countCell.addEventListener('mouseleave', mouseExit);
         }
     }
     Thanks.setUpHighlighting = setUpHighlighting;

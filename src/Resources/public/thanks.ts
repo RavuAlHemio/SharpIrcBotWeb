@@ -6,8 +6,8 @@ module Thanks
         for (var i: number = 0; i < countCells.length; ++i)
         {
             var countCell = <HTMLTableDataCellElement>countCells.item(i);
-            countCell.addEventListener('mouseover', mouseEnter);
-            countCell.addEventListener('mouseout', mouseExit);
+            countCell.addEventListener('mouseenter', mouseEnter);
+            countCell.addEventListener('mouseleave', mouseExit);
         }
     }
 
