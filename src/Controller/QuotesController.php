@@ -23,7 +23,7 @@ class QuotesController extends Controller
                 q
             ORDER BY
                 points DESC,
-                q.numID DESC
+                q.dtmTimestamp DESC
         ');
         $arrQuotesAndPoints = $objQuery->getResult();
         $arrTemplateQuotes = [];
