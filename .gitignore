@@ -7,3 +7,6 @@ vendor/
 *.iml
 *.ipr
 *.iws
+
+# no TypeScript js map files
+*.js.map
