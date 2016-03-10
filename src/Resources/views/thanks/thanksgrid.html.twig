@@ -2,6 +2,13 @@
 
 {% block title %}Thanks{% endblock %}
 
+{% block head %}
+    <script type="text/javascript" src="{{ asset('bundles/ravualhemiosharpircbotweb/thanks.js') }}"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', Thanks.setUpHighlighting);
+    </script>
+{% endblock %}
+
 {% block body %}
     <table class="thanks-grid">
         <tr>
