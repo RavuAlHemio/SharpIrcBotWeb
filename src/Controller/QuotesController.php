@@ -16,7 +16,7 @@ class QuotesController extends Controller
                 q,
                 COUNT(qv.numID)
             FROM
-                SharpIrcBotWebBundle:Quote q
+                RavuAlHemioSharpIrcBotWebBundle:Quote q
                 JOIN q.arrVotes qv
             ORDER BY
                 COUNT(qv.numID)
