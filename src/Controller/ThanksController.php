@@ -18,7 +18,7 @@ class ThanksController extends Controller
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:ThanksEntry te
             WHERE
-                NOT te.blnDeleted
+                te.blnDeleted = FALSE
             GROUP BY
                 thanker,
                 thankee
