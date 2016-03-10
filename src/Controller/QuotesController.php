@@ -2,6 +2,7 @@
 
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
+use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,20 +22,41 @@ class QuotesController extends Controller
             GROUP BY
                 q
             ORDER BY
-                points
+                points DESC
         ');
-        $arrQuotes = $objQuery->getResult();
+        $arrQuotesAndPoints = $objQuery->getResult();
+        $arrTemplateQuotes = [];
+        $intLastPoints = null;
 
-        // DEBUG
-        ob_start();
-        var_dump($arrQuotes);
-        $strRet = ob_get_clean();
-        return $strRet;
+        foreach ($arrQuotesAndPoints as $arrQuoteAndPoints)
+        {
+            /** @var Quote $objQuote */
+            $objQuote = $arrQuoteAndPoints[0];
+            $intPoints = $arrQuoteAndPoints[1];
 
-        /*
+            switch ($objQuote->strMessageType)
+            {
+                case 'M':
+                    $strBody = "<{$objQuote->strAuthor}> {$objQuote->strBody}";
+                    break;
+                case 'A':
+                    $strBody = "* {$objQuote->strAuthor} {$objQuote->strBody}";
+                    break;
+                case 'F':
+                default:
+                    $strBody = $objQuote->strBody;
+                    break;
+            }
+
+            $arrTemplateQuotes[] = [
+                'score' => $intPoints,
+                'scoreChanged' => ($intPoints !== $intLastPoints),
+                'body' => $strBody
+            ];
+        }
+
         return $this->render('quotes/topquotes.html.twig', [
-
+            'topQuotes' => $arrTemplateQuotes
         ]);
-        */
     }
 }

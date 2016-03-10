@@ -4,9 +4,9 @@
 
 {% block body %}
     <table>
-    {% for quote in top_quotes %}
+    {% for quote in topQuotes %}
         <tr>
-            <td aria-label="score" class="score {% if quote.rankChanged %}changed{% else %}unchanged{% endif %}">{{ quote.score|e }}</td>
+            <td aria-label="score" class="score {% if quote.scoreChanged %}changed{% else %}unchanged{% endif %}">{{ quote.score|e }}</td>
             <td aria-label="body" class="quote-body">{{ quote.body|e }}</td>
         </tr>
     {% endfor %}
