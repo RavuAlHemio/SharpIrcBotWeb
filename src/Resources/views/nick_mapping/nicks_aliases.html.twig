@@ -1,0 +1,15 @@
+{% extends "@RavuAlHemioSharpIrcBotWeb/base.html.twig" %}
+
+{% block title %}Nicks and Aliases{% endblock %}
+
+{% block body %}
+    <p>Note: this list is not exhaustive; the bot also respects NickServ registrations/logins.</p>
+    <table class="nicks-and-aliases">
+    {% for nickAndAlias in nicksAndAliases %}
+        <tr>
+            <td aria-label="nick" class="nick {% if nickAndAlias.nickChanged %}changed{% else %}unchanged{% endif %}">{{ nickAndAlias.nick|e }}</td>
+            <td aria-label="alias" class="alias{% if nickAndAlias.noAlias %} no-alias{% endif %}">{{ nickAndAlias.alias|e }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
