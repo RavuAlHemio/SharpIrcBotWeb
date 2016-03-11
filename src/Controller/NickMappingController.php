@@ -41,7 +41,7 @@ class NickMappingController extends Controller
             $strLastBaseNick = $strBaseNick;
         }
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/nicks_aliases.html.twig', [
+        return $this->render('@RavuAlHemioSharpIrcBotWeb/nick_mapping/nicks_aliases.html.twig', [
             'nicksAndAliases' => $arrTemplateNicksAndAliases
         ]);
     }
