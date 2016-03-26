@@ -95,13 +95,11 @@ var Thanks;
             // not changing this
             return;
         }
-        else if (pin) {
-            pinnedHighlight = true;
-        }
         var cells = document.getElementsByTagName('td');
         for (var i = 0; i < cells.length; ++i) {
             cells.item(i).classList.remove('highlight');
         }
+        pinnedHighlight = false;
     }
 })(Thanks || (Thanks = {}));
 //# sourceMappingURL=thanks.js.map

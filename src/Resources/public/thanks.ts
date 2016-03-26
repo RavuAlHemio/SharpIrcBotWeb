@@ -136,15 +136,13 @@ module Thanks
             // not changing this
             return;
         }
-        else if (pin)
-        {
-            pinnedHighlight = true;
-        }
 
         var cells = document.getElementsByTagName('td');
         for (var i: number = 0; i < cells.length; ++i)
         {
             cells.item(i).classList.remove('highlight');
         }
+
+        pinnedHighlight = false;
     }
 }
