@@ -9,7 +9,10 @@ var Thanks;
             countCell.addEventListener('mouseleave', cellMouseExit);
             countCell.addEventListener('click', cellClicked);
         }
-        document.body.addEventListener('click', bodyClicked);
+        var spacer = document.querySelector('table.thanks-grid td.top-left-spacer');
+        if (spacer !== null) {
+            spacer.addEventListener('click', spacerClicked);
+        }
     }
     Thanks.setUpHighlighting = setUpHighlighting;
     function highlightCriterion(targetCell, currentCell) {
@@ -54,7 +57,7 @@ var Thanks;
         var cell = ev.target;
         addHighlight(true, cell);
     }
-    function bodyClicked(ev) {
+    function spacerClicked(ev) {
         removeAllHighlights(true);
     }
     function addHighlight(pin, relativeToCell) {

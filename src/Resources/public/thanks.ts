@@ -12,7 +12,12 @@ module Thanks
             countCell.addEventListener('mouseleave', cellMouseExit);
             countCell.addEventListener('click', cellClicked);
         }
-        document.body.addEventListener('click', bodyClicked);
+        
+        var spacer = document.querySelector('table.thanks-grid td.top-left-spacer');
+        if (spacer !== null)
+        {
+            spacer.addEventListener('click', spacerClicked);
+        }
     }
 
     function highlightCriterion(targetCell: HTMLTableCellElement, currentCell: HTMLTableCellElement): boolean
@@ -77,7 +82,7 @@ module Thanks
         addHighlight(true, cell);
     }
     
-    function bodyClicked(ev: MouseEvent): void
+    function spacerClicked(ev: MouseEvent): void
     {
         removeAllHighlights(true);
     }
