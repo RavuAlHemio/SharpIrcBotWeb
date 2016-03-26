@@ -82,6 +82,7 @@ module Thanks
 
     function cellClicked(cell: HTMLTableDataCellElement): void
     {
+        removeAllHighlights(true);
         addHighlight(true, cell);
     }
 

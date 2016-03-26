@@ -56,6 +56,7 @@ var Thanks;
         removeHighlight(false, cell);
     }
     function cellClicked(cell) {
+        removeAllHighlights(true);
         addHighlight(true, cell);
     }
     function spacerClicked() {
