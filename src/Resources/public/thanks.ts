@@ -1,3 +1,4 @@
+"use strict";
 module Thanks
 {
     var pinnedHighlight: boolean = false;
@@ -8,16 +9,21 @@ module Thanks
         for (var i: number = 0; i < countCells.length; ++i)
         {
             var countCell = <HTMLTableDataCellElement>countCells.item(i);
-            countCell.addEventListener('mouseenter', cellMouseEnter);
-            countCell.addEventListener('mouseleave', cellMouseExit);
-            countCell.addEventListener('click', cellClicked);
+            countCell.addEventListener('mouseenter', bind(countCell, cellMouseEnter));
+            countCell.addEventListener('mouseleave', bind(countCell, cellMouseExit));
+            countCell.addEventListener('click', bind(countCell, cellClicked));
         }
-        
+
         var spacer = document.querySelector('table.thanks-grid td.top-left-spacer');
         if (spacer !== null)
         {
             spacer.addEventListener('click', spacerClicked);
         }
+    }
+
+    function bind<T, U>(val: T, func: (v: T) => U): () => U
+    {
+        return ((arg) => (() => func(arg)))(val);
     }
 
     function highlightCriterion(targetCell: HTMLTableCellElement, currentCell: HTMLTableCellElement): boolean
@@ -64,25 +70,22 @@ module Thanks
         return ret;
     }
 
-    function cellMouseEnter(ev: MouseEvent): void
+    function cellMouseEnter(cell: HTMLTableDataCellElement): void
     {
-        var cell = <HTMLTableDataCellElement>ev.target;
         addHighlight(false, cell);
     }
 
-    function cellMouseExit(ev: MouseEvent): void
+    function cellMouseExit(cell: HTMLTableDataCellElement): void
     {
-        var cell = <HTMLTableDataCellElement>ev.target;
         removeHighlight(false, cell);
     }
-    
-    function cellClicked(ev: MouseEvent): void
+
+    function cellClicked(cell: HTMLTableDataCellElement): void
     {
-        var cell = <HTMLTableDataCellElement>ev.target;
         addHighlight(true, cell);
     }
-    
-    function spacerClicked(ev: MouseEvent): void
+
+    function spacerClicked(): void
     {
         removeAllHighlights(true);
     }
@@ -107,7 +110,7 @@ module Thanks
             c.classList.add('highlight');
         });
     }
-    
+
     function removeHighlight(pin: boolean, relativeToCell: HTMLTableDataCellElement): void
     {
         if (pinnedHighlight && !pin)
@@ -128,7 +131,7 @@ module Thanks
             c.classList.remove('highlight');
         });
     }
-    
+
     function removeAllHighlights(pin: boolean): void
     {
         if (pinnedHighlight && !pin)

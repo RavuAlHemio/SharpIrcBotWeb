@@ -1,3 +1,4 @@
+"use strict";
 var Thanks;
 (function (Thanks) {
     var pinnedHighlight = false;
@@ -5,9 +6,9 @@ var Thanks;
         var countCells = document.querySelectorAll('table.thanks-grid td.thanks-count');
         for (var i = 0; i < countCells.length; ++i) {
             var countCell = countCells.item(i);
-            countCell.addEventListener('mouseenter', cellMouseEnter);
-            countCell.addEventListener('mouseleave', cellMouseExit);
-            countCell.addEventListener('click', cellClicked);
+            countCell.addEventListener('mouseenter', bind(countCell, cellMouseEnter));
+            countCell.addEventListener('mouseleave', bind(countCell, cellMouseExit));
+            countCell.addEventListener('click', bind(countCell, cellClicked));
         }
         var spacer = document.querySelector('table.thanks-grid td.top-left-spacer');
         if (spacer !== null) {
@@ -15,6 +16,9 @@ var Thanks;
         }
     }
     Thanks.setUpHighlighting = setUpHighlighting;
+    function bind(val, func) {
+        return (function (arg) { return (function () { return func(arg); }); })(val);
+    }
     function highlightCriterion(targetCell, currentCell) {
         if (targetCell.hasAttribute('data-donor-index') && currentCell.hasAttribute('data-donor-index')) {
             if (targetCell.getAttribute('data-donor-index') === currentCell.getAttribute('data-donor-index')) {
@@ -45,19 +49,16 @@ var Thanks;
         }
         return ret;
     }
-    function cellMouseEnter(ev) {
-        var cell = ev.target;
+    function cellMouseEnter(cell) {
         addHighlight(false, cell);
     }
-    function cellMouseExit(ev) {
-        var cell = ev.target;
+    function cellMouseExit(cell) {
         removeHighlight(false, cell);
     }
-    function cellClicked(ev) {
-        var cell = ev.target;
+    function cellClicked(cell) {
         addHighlight(true, cell);
     }
-    function spacerClicked(ev) {
+    function spacerClicked() {
         removeAllHighlights(true);
     }
     function addHighlight(pin, relativeToCell) {
