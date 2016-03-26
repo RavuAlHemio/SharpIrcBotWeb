@@ -1,12 +1,15 @@
 var Thanks;
 (function (Thanks) {
+    var pinnedHighlight = false;
     function setUpHighlighting() {
         var countCells = document.querySelectorAll('table.thanks-grid td.thanks-count');
         for (var i = 0; i < countCells.length; ++i) {
             var countCell = countCells.item(i);
-            countCell.addEventListener('mouseenter', mouseEnter);
-            countCell.addEventListener('mouseleave', mouseExit);
+            countCell.addEventListener('mouseenter', cellMouseEnter);
+            countCell.addEventListener('mouseleave', cellMouseExit);
+            countCell.addEventListener('click', cellClicked);
         }
+        document.body.addEventListener('click', bodyClicked);
     }
     Thanks.setUpHighlighting = setUpHighlighting;
     function highlightCriterion(targetCell, currentCell) {
@@ -39,23 +42,54 @@ var Thanks;
         }
         return ret;
     }
-    function mouseEnter(ev) {
+    function cellMouseEnter(ev) {
         var cell = ev.target;
+        addHighlight(false, cell);
+    }
+    function cellMouseExit(ev) {
+        var cell = ev.target;
+        removeHighlight(false, cell);
+    }
+    function cellClicked(ev) {
+        var cell = ev.target;
+        addHighlight(true, cell);
+    }
+    function bodyClicked(ev) {
+        removeAllHighlights(true);
+    }
+    function addHighlight(pin, relativeToCell) {
+        if (pinnedHighlight && !pin) {
+            // not changing this
+            return;
+        }
         // get all the hit cells
-        var hitCells = getCellsHitByHighlight(cell);
+        var hitCells = getCellsHitByHighlight(relativeToCell);
         // highlight them
         hitCells.forEach(function (c) {
             c.classList.add('highlight');
         });
     }
-    function mouseExit(ev) {
-        var cell = ev.target;
+    function removeHighlight(pin, relativeToCell) {
+        if (pinnedHighlight && !pin) {
+            // not changing this
+            return;
+        }
         // get all the hit cells
-        var hitCells = getCellsHitByHighlight(cell);
-        // unhighlight them
+        var hitCells = getCellsHitByHighlight(relativeToCell);
+        // highlight them
         hitCells.forEach(function (c) {
             c.classList.remove('highlight');
         });
+    }
+    function removeAllHighlights(pin) {
+        if (pinnedHighlight && !pin) {
+            // not changing this
+            return;
+        }
+        var cells = document.getElementsByTagName('td');
+        for (var i = 0; i < cells.length; ++i) {
+            cells.item(i).classList.remove('highlight');
+        }
     }
 })(Thanks || (Thanks = {}));
 //# sourceMappingURL=thanks.js.map

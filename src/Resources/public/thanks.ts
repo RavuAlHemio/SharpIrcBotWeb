@@ -1,14 +1,18 @@
 module Thanks
 {
+    var pinnedHighlight: boolean = false;
+
     export function setUpHighlighting(): void
     {
         var countCells: NodeListOf<Element> = document.querySelectorAll('table.thanks-grid td.thanks-count');
         for (var i: number = 0; i < countCells.length; ++i)
         {
             var countCell = <HTMLTableDataCellElement>countCells.item(i);
-            countCell.addEventListener('mouseenter', mouseEnter);
-            countCell.addEventListener('mouseleave', mouseExit);
+            countCell.addEventListener('mouseenter', cellMouseEnter);
+            countCell.addEventListener('mouseleave', cellMouseExit);
+            countCell.addEventListener('click', cellClicked);
         }
+        document.body.addEventListener('click', bodyClicked);
     }
 
     function highlightCriterion(targetCell: HTMLTableCellElement, currentCell: HTMLTableCellElement): boolean
@@ -55,29 +59,75 @@ module Thanks
         return ret;
     }
 
-    function mouseEnter(ev: MouseEvent): void
+    function cellMouseEnter(ev: MouseEvent): void
     {
         var cell = <HTMLTableDataCellElement>ev.target;
+        addHighlight(false, cell);
+    }
+
+    function cellMouseExit(ev: MouseEvent): void
+    {
+        var cell = <HTMLTableDataCellElement>ev.target;
+        removeHighlight(false, cell);
+    }
+    
+    function cellClicked(ev: MouseEvent): void
+    {
+        var cell = <HTMLTableDataCellElement>ev.target;
+        addHighlight(true, cell);
+    }
+    
+    function bodyClicked(ev: MouseEvent): void
+    {
+        removeAllHighlights(true);
+    }
+
+    function addHighlight(pin: boolean, relativeToCell: HTMLTableDataCellElement): void
+    {
+        if (pinnedHighlight && !pin)
+        {
+            // not changing this
+            return;
+        }
 
         // get all the hit cells
-        var hitCells = getCellsHitByHighlight(cell);
+        var hitCells = getCellsHitByHighlight(relativeToCell);
 
         // highlight them
         hitCells.forEach(function (c: HTMLTableCellElement) {
             c.classList.add('highlight');
         });
     }
-
-    function mouseExit(ev: MouseEvent): void
+    
+    function removeHighlight(pin: boolean, relativeToCell: HTMLTableDataCellElement): void
     {
-        var cell = <HTMLTableDataCellElement>ev.target;
+        if (pinnedHighlight && !pin)
+        {
+            // not changing this
+            return;
+        }
 
         // get all the hit cells
-        var hitCells = getCellsHitByHighlight(cell);
+        var hitCells = getCellsHitByHighlight(relativeToCell);
 
-        // unhighlight them
+        // highlight them
         hitCells.forEach(function (c: HTMLTableCellElement) {
             c.classList.remove('highlight');
         });
+    }
+    
+    function removeAllHighlights(pin: boolean): void
+    {
+        if (pinnedHighlight && !pin)
+        {
+            // not changing this
+            return;
+        }
+
+        var cells = document.getElementsByTagName('td');
+        for (var i: number = 0; i < cells.length; ++i)
+        {
+            cells.item(i).classList.remove('highlight');
+        }
     }
 }
