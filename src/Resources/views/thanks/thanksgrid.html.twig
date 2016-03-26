@@ -19,7 +19,7 @@
             {% for thanker in thankers_thankees_counts|keys %}
                 <td class="recipient" data-recipient-index="{{ loop.index0 }}"><div class="alibi-div">{{ thanker|e }}</div></td>
             {% endfor %}
-            <td class="recipient sum donor-sum" data-recipient-index="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Sum</div></td>
+            <td class="recipient sum donor-sum" data-recipient-index="{{ thankers_thankees_counts|length }}"><div class="alibi-div">&#931; given</div></td>
         </tr>
         {% for thanker in thankers_thankees_counts|keys %}
             <tr>
@@ -42,7 +42,7 @@
             </tr>
         {% endfor %}
         <tr>
-            <td class="donor sum recipient-sum" data-donor-index="{{ thankers_thankees_counts|length }}"><div class="alibi-div">Sum</div></td>
+            <td class="donor sum recipient-sum" data-donor-index="{{ thankers_thankees_counts|length }}"><div class="alibi-div">&#931; received</div></td>
             {% for thankee in thankers_thankees_counts|keys %}
                 <td
                     class="thanks-count sum recipient-sum {% if thankees_totals[thankee] == 0 %}zero{% else %}nonzero{% endif %}"
