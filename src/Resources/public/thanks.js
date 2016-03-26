@@ -65,6 +65,9 @@ var Thanks;
             // not changing this
             return;
         }
+        else if (pin) {
+            pinnedHighlight = true;
+        }
         // get all the hit cells
         var hitCells = getCellsHitByHighlight(relativeToCell);
         // highlight them
@@ -77,6 +80,9 @@ var Thanks;
             // not changing this
             return;
         }
+        else if (pin) {
+            pinnedHighlight = true;
+        }
         // get all the hit cells
         var hitCells = getCellsHitByHighlight(relativeToCell);
         // highlight them
@@ -88,6 +94,9 @@ var Thanks;
         if (pinnedHighlight && !pin) {
             // not changing this
             return;
+        }
+        else if (pin) {
+            pinnedHighlight = true;
         }
         var cells = document.getElementsByTagName('td');
         for (var i = 0; i < cells.length; ++i) {

@@ -94,6 +94,10 @@ module Thanks
             // not changing this
             return;
         }
+        else if (pin)
+        {
+            pinnedHighlight = true;
+        }
 
         // get all the hit cells
         var hitCells = getCellsHitByHighlight(relativeToCell);
@@ -111,6 +115,10 @@ module Thanks
             // not changing this
             return;
         }
+        else if (pin)
+        {
+            pinnedHighlight = true;
+        }
 
         // get all the hit cells
         var hitCells = getCellsHitByHighlight(relativeToCell);
@@ -127,6 +135,10 @@ module Thanks
         {
             // not changing this
             return;
+        }
+        else if (pin)
+        {
+            pinnedHighlight = true;
         }
 
         var cells = document.getElementsByTagName('td');
