@@ -76,6 +76,7 @@ var Thanks;
         hitCells.forEach(function (c) {
             c.classList.add('highlight');
         });
+        relativeToCell.classList.add('bold-highlight');
     }
     function removeHighlight(pin, relativeToCell) {
         if (pinnedHighlight && !pin) {
@@ -91,6 +92,7 @@ var Thanks;
         hitCells.forEach(function (c) {
             c.classList.remove('highlight');
         });
+        relativeToCell.classList.remove('bold-highlight');
     }
     function removeAllHighlights(pin) {
         if (pinnedHighlight && !pin) {
@@ -100,6 +102,7 @@ var Thanks;
         var cells = document.getElementsByTagName('td');
         for (var i = 0; i < cells.length; ++i) {
             cells.item(i).classList.remove('highlight');
+            cells.item(i).classList.remove('bold-highlight');
         }
         pinnedHighlight = false;
     }

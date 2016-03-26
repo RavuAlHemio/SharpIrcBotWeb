@@ -110,6 +110,7 @@ module Thanks
         hitCells.forEach(function (c: HTMLTableCellElement) {
             c.classList.add('highlight');
         });
+        relativeToCell.classList.add('bold-highlight');
     }
 
     function removeHighlight(pin: boolean, relativeToCell: HTMLTableDataCellElement): void
@@ -131,6 +132,7 @@ module Thanks
         hitCells.forEach(function (c: HTMLTableCellElement) {
             c.classList.remove('highlight');
         });
+        relativeToCell.classList.remove('bold-highlight');
     }
 
     function removeAllHighlights(pin: boolean): void
@@ -145,6 +147,7 @@ module Thanks
         for (var i: number = 0; i < cells.length; ++i)
         {
             cells.item(i).classList.remove('highlight');
+            cells.item(i).classList.remove('bold-highlight');
         }
 
         pinnedHighlight = false;
