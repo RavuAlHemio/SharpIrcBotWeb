@@ -39,12 +39,6 @@ class Quote
 
     /**
      * @var string
-     * @ORM\Column(name="author_lowercase", type="string")
-     */
-    public $strAuthorLowercase;
-
-    /**
-     * @var string
      * @ORM\Column(name="message_type", type="string", length=1)
      */
     public $strMessageType;
@@ -54,12 +48,6 @@ class Quote
      * @ORM\Column(name="body", type="string")
      */
     public $strBody;
-
-    /**
-     * @var string
-     * @ORM\Column(name="body_lowercase", type="string")
-     */
-    public $strBodyLowercase;
 
     /**
      * @var QuoteVote[]

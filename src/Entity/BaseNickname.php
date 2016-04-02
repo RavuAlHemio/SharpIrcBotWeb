@@ -19,12 +19,6 @@ class BaseNickname
     public $strNickname;
 
     /**
-     * @var string
-     * @ORM\Column(name="nickname_lowercase", type="string")
-     */
-    public $strNicknameLowercase;
-
-    /**
      * @var NickMapping[]
      * @ORM\OneToMany(targetEntity="NickMapping", mappedBy="objBaseNickname")
      */
