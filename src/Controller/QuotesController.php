@@ -15,10 +15,10 @@ class QuotesController extends Controller
         $objQuery = $objEM->createQuery('
             SELECT
                 q,
-                SUM(qv.intPoints) points
+                COALESCE(SUM(qv.intPoints), 0) points
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:Quote q
-                JOIN q.arrVotes qv
+                LEFT OUTER JOIN q.arrVotes qv
             GROUP BY
                 q
             ORDER BY
