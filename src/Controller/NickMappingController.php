@@ -72,7 +72,7 @@ class NickMappingController extends Controller
         {
             $objAsMappedNickQuery = $objEM->createQuery('
                 SELECT
-                    bn.strNickname baseNick
+                    bn.strNickname
                 FROM
                     RavuAlHemioSharpIrcBotWebBundle:BaseNickname bn
                     JOIN bn.arrMappings mn
