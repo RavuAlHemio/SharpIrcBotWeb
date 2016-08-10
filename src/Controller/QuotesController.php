@@ -62,10 +62,7 @@ class QuotesController extends Controller
             FROM
                 RavuAlHemioSharpIrcBotWebBundle:Quote q
                 LEFT OUTER JOIN q.arrVotes qv
-            GROUP BY
-                q
             ORDER BY
-                SUM(qv.intPoints) DESC,
                 q.dtmTimestamp DESC
         ');
         /** @var Quote[] $arrQuotesWithVotes */
