@@ -2,15 +2,17 @@
 
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
+use RavuAlHemio\SharpIrcBotWebBundle\Entity\QuoteVote;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 
 
 class QuotesController extends Controller
 {
     public function topQuotesAction()
     {
+        /** @var EntityManagerInterface $objEM */
         $objEM = $this->getDoctrine()->getManager();
         $objQuery = $objEM->createQuery('
             SELECT
@@ -34,20 +36,7 @@ class QuotesController extends Controller
             /** @var Quote $objQuote */
             $objQuote = $arrQuoteAndPoints[0];
             $intPoints = $arrQuoteAndPoints['points'];
-
-            switch ($objQuote->strMessageType)
-            {
-                case 'M':
-                    $strBody = "<{$objQuote->strAuthor}> {$objQuote->strBody}";
-                    break;
-                case 'A':
-                    $strBody = "* {$objQuote->strAuthor} {$objQuote->strBody}";
-                    break;
-                case 'F':
-                default:
-                    $strBody = $objQuote->strBody;
-                    break;
-            }
+            $strBody = static::formatQuote($objQuote);
 
             $arrTemplateQuotes[] = [
                 'score' => $intPoints,
@@ -60,5 +49,94 @@ class QuotesController extends Controller
         return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/topquotes.html.twig', [
             'topQuotes' => $arrTemplateQuotes
         ]);
+    }
+
+    public function quotesVotesAction()
+    {
+        /** @var EntityManagerInterface $objEM */
+        $objEM = $this->getDoctrine()->getManager();
+        $objQuery = $objEM->createQuery('
+            SELECT
+                q,
+                qv
+            FROM
+                RavuAlHemioSharpIrcBotWebBundle:Quote q
+                LEFT OUTER JOIN q.arrVotes qv
+            GROUP BY
+                q
+            ORDER BY
+                SUM(qv.intPoints) DESC,
+                q.dtmTimestamp DESC
+        ');
+        /** @var Quote[] $arrQuotesWithVotes */
+        $arrQuotesWithVotes = $objQuery->getResult();
+        $arrTemplateQuotes = [];
+        $intLastPoints = null;
+
+        foreach ($arrQuotesWithVotes as $objQuote)
+        {
+            $strBody = static::formatQuote($objQuote);
+            $strVotes = static::votesForTemplate($objQuote->arrVotes);
+            $intScore = static::sumVotes($objQuote->arrVotes);
+
+            $arrTemplateQuotes[] = [
+                'body' => $strBody,
+                'votes' => $strVotes,
+                'score' => $intScore
+            ];
+        }
+
+        return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/quotesvotes.html.twig', [
+            'quotesVotes' => $arrTemplateQuotes
+        ]);
+    }
+
+    /**
+     * @param Quote $objQuote
+     * @return string
+     */
+    public static function formatQuote($objQuote)
+    {
+        switch ($objQuote->strMessageType)
+        {
+            case 'M':
+                return "<{$objQuote->strAuthor}> {$objQuote->strBody}";
+            case 'A':
+                return "* {$objQuote->strAuthor} {$objQuote->strBody}";
+            case 'F':
+            default:
+                return $objQuote->strBody;
+        }
+    }
+
+    /**
+     * @param QuoteVote[] $arrVotes
+     * @return array
+     */
+    public static function votesForTemplate($arrVotes)
+    {
+        $arrRet = [];
+        foreach ($arrVotes as $objVote)
+        {
+            $arrRet[] = [
+                'voter' => $objVote->strVoterLowercase,
+                'points' => $objVote->intPoints
+            ];
+        }
+        return $arrRet;
+    }
+
+    /**
+     * @param QuoteVote[] $arrVotes
+     * @return int
+     */
+    public static function sumVotes($arrVotes)
+    {
+        $intScore = 0;
+        foreach ($arrVotes as $objVote)
+        {
+            $intScore += $objVote->intPoints;
+        }
+        return $intScore;
     }
 }

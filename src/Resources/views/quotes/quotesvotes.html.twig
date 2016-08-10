@@ -1,0 +1,29 @@
+{% extends "@RavuAlHemioSharpIrcBotWeb/base.html.twig" %}
+
+{% block title %}Quotes and Votes{% endblock %}
+
+{% block body %}
+    <table class="quotes-votes">
+    {% for quote in quotesVotes %}
+        <tr>
+            <td aria-label="body" class="quote-body">{{ quote.body|e }}</td>
+            <td aria-label="votes" class="votes">
+                <span class="score">{{ quote.score|e }}</span>:
+                <ul class="votes">
+                    {% for vote in quote.votes %}
+                        <li class="vote">
+                            {% if vote.points > 0 %}
+                            <span class="sigil positive">+</span><span class="voter">{{ vote.voter }}</span>
+                            {% elseif vote.points < 0 %}
+                            <span class="sigil negative">&#8722;</span><span class="voter">{{ vote.voter }}</span>
+                            {% else %}
+                            <span class="sigil neutral">~</span><span class="voter">{{ vote.voter }}</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
