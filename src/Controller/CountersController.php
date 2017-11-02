@@ -25,42 +25,40 @@ class CountersController extends Controller
         ');
         $arrCommandsAndCounts = $objQuery->getResult();
 
-        $objQuery = $objEM->createQuery('
+        $objConn = $objEM->getConnection();
+        $objStmt = $objConn->executeQuery('
             SELECT
-                ce.strCommand command,
-                ce.dtmHappened happened,
-                ce.strPerpNickname perpNick,
-                ce.strMessage message
+                ranked.command AS command,
+                ranked.happened_timestamp AS happened,
+                ranked.perp_nickname AS perp_nick,
+                ranked.message AS message
             FROM
-                RavuAlHemioSharpIrcBotWebBundle:CounterEntry ce1
-                LEFT OUTER JOIN RavuAlHemioSharpIrcBotWebBundle:CounterEntry ce2 ON (
-                    ce1.strCommand = ce2.strCommand
-                    AND ce1.dtmHappened < ce2.dtmHappened
-                )
-            GROUP BY
-                command
-            HAVING
-                COUNT(*) < 5
+                (
+                    SELECT
+                        e.*,
+                        rank() OVER (
+                            PARTITION BY command
+                            ORDER BY happened_timestamp DESC
+                        )
+                    FROM
+                        counters.entries AS e
+                ) AS ranked
             WHERE
-                ce.blnExpunged = FALSE
-            ORDER BY
-                command,
-                ce.dtmHappened DESC
+                rank <= 5
         ');
-        $arrCommandsAndRecentEntries = $objQuery->getResult();
-        $arrCommandToRecentEntries = [];
 
-        foreach ($arrCommandsAndRecentEntries as $arrTopEntry)
+        $arrCommandToRecentEntries = [];
+        while (($arrResult = $objStmt->fetch()) != false)
         {
-            if (!array_key_exists($arrTopEntry['command'], $arrCommandToRecentEntries))
+            if (!array_key_exists($arrResult['command'], $arrCommandToRecentEntries))
             {
-                $arrCommandToRecentEntries[$arrTopEntry['command']] = [];
+                $arrCommandToRecentEntries[$arrResult['command']] = [];
             }
 
-            $arrCommandToRecentEntries[$arrTopEntry['command']][] = [
-                'perpNick' => $arrTopEntry['perpNick'],
-                'message' => $arrTopEntry['message'],
-                'happened' => $arrTopEntry['happened']
+            $arrCommandToRecentEntries[$arrResult['command']][] = [
+                'perpNick' => $arrResult['perp_nick'],
+                'message' => $arrResult['message'],
+                'happened' => $arrResult['happened']
             ];
         }
 

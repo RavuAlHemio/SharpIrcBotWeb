@@ -9,7 +9,7 @@
             <p class="count">Count: <span class="counter-value">{{ counter.count }}</span></p>
             <p class="latest-entries-header">Latest entries:</p>
             <table class="latest-entries">
-                {% for entry in recentEntries %}
+                {% for entry in counter.recentEntries %}
                 <tr>
                     <td aria-label="entry" class="entry"><pre>&lt;{{ entry.perpNick|e }}&gt; {{ entry.message|e }}</pre></td>
                 </tr>
