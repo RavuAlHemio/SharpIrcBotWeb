@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entries", schema="counters")
  */
-class BaseNickname
+class CounterEntry
 {
     /**
      * @var string
