@@ -63,7 +63,8 @@ class QuotesController extends Controller
                 RavuAlHemioSharpIrcBotWebBundle:Quote q
                 LEFT OUTER JOIN q.arrVotes qv
             ORDER BY
-                q.dtmTimestamp DESC
+                q.dtmTimestamp DESC,
+                qv.strVoterLowercase ASC
         ');
         /** @var Quote[] $arrQuotesWithVotes */
         $arrQuotesWithVotes = $objQuery->getResult();
