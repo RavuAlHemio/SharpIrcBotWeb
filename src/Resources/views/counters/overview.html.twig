@@ -11,7 +11,7 @@
             <table class="latest-entries">
                 {% for entry in counter.recentEntries %}
                 <tr>
-                    <td aria-label="entry" class="entry"><pre>&lt;{{ entry.perpNick|e }}&gt; {{ entry.message|e }}</pre></td>
+                    <td aria-label="entry" class="entry"><pre>[<span class="timestamp">{{ entry.happened|date("Y-m-d H:i:s") }}</span>] &lt;<span class="perp-nick">{{ entry.perpNick|e }}</span>&gt; <span class="message">{{ entry.message|e }}</span></pre></td>
                 </tr>
                 {% endfor %}
             </table>
