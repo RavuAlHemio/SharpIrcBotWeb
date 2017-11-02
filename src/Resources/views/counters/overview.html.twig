@@ -3,12 +3,18 @@
 {% block title %}Counters{% endblock %}
 
 {% block body %}
-    <table class="counters">
-    {% for commandAndCount in commandsAndCounts %}
-        <tr>
-            <td aria-label="command" class="command">{{ commandAndCount.command|e }}</td>
-            <td aria-label="count" class="count">{{ commandAndCount.count }}</td>
-        </tr>
+    {% for counter in counters %}
+        <section class="counter">
+            <h2>!{{ counter.command|e }}</h2>
+            <p class="count">Count: <span class="counter-value">{{ counter.count }}</span></p>
+            <p class="latest-entries-header">Latest entries:</p>
+            <table class="latest-entries">
+                {% for entry in recentEntries %}
+                <tr>
+                    <td aria-label="entry" class="entry"><pre>&lt;{{ entry.perpNick|e }}&gt; {{ entry.message|e }}</pre></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
     {% endfor %}
-    </table>
 {% endblock %}
