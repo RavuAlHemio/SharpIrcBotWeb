@@ -1,0 +1,14 @@
+{% extends "@RavuAlHemioSharpIrcBotWeb/base.html.twig" %}
+
+{% block title %}Counters{% endblock %}
+
+{% block body %}
+    <table class="counters">
+    {% for commandAndCount in commandsAndCounts %}
+        <tr>
+            <td aria-label="command" class="command">{{ commandAndCount.command|e }}</td>
+            <td aria-label="count" class="count">{{ commandAndCount.count }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
