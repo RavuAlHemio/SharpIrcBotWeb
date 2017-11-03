@@ -47,14 +47,14 @@
                 {% for user in users %}
                     <tr class="entry">
                         <td class="user">{{ user.username|e }}</td>
-                        {% for wd in weekday_order %}
+                        {% for wd in weekdayOrder %}
                             <td class="weekday count">{{ user.weekDayToCount[wd] }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
                 <tr class="totals">
                     <td class="user">Total</td>
-                    {% for wd in weekday_order %}
+                    {% for wd in weekdayOrder %}
                         <td class="weekday count">{{ totals.weekDayToCount[wd] }}</td>
                     {% endfor %}
                 </tr>
