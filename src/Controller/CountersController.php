@@ -63,7 +63,7 @@ class CountersController extends Controller
             ce.strCommand = :command
             AND ce.blnExpunged = FALSE
         ORDER BY
-            happened DESC
+            ce.dtmHappened DESC
     ';
 
     const QUERY_POSTGRES_GET_WEEKDAY_STATS_BY_COMMAND = '
