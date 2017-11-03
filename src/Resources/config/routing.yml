@@ -1,0 +1,34 @@
+ravuAlHemioSharpIrcBot_counters_overview:
+    path:     /counters
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:Counters:overview
+
+ravuAlHemioSharpIrcBot_counters_details:
+    path:     /counters/{strCommand}
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:Counters:details
+
+ravuAlHemioSharpIrcBot_quotes_topQuotes:
+    path:     /topquotes
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:Quotes:topQuotes
+
+ravuAlHemioSharpIrcBot_quotes_quotesVotes:
+    path:     /quotesvotes
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:Quotes:quotesVotes
+
+ravuAlHemioSharpIrcBot_thanks_thanksGrid:
+    path:     /thanks
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:Thanks:thanksGrid
+
+ravuAlHemioSharpIrcBot_nickMapping_nicksAliases:
+    path:    /nicks-aliases
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:NickMapping:nicksAliases
+
+ravuAlHemioSharpIrcBot_nickMapping_aliasesForNick:
+    path:    /aliases
+    defaults:
+        _controller: RavuAlHemioSharpIrcBotWebBundle:NickMapping:aliasesForNick

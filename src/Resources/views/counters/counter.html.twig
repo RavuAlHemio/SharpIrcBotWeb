@@ -1,0 +1,58 @@
+{% extends "@RavuAlHemioSharpIrcBotWeb/base.html.twig" %}
+
+{% block title %}Counters{% endblock %}
+
+{% block body %}
+    <section class="counter">
+        <h2>!{{ command|e }}</h2>
+        <p class="count">Count: <span class="counter-value">{{ count }}</span></p>
+        <section class="latest-entries">
+            <h3>Latest entries</h3>
+            <table class="latest-entries">
+                {% for entry in recentEntries %}
+                <tr>
+                    <td aria-label="entry" class="entry"><pre>[<span class="timestamp">{{ entry.happened|date("Y-m-d H:i:s") }}</span>] &lt;<span class="perp-nick">{{ entry.perpNick|e }}</span>&gt; <span class="message">{{ entry.message|e }}</span></pre></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+        <section class="stats-week-day">
+            <h3>Counts by weekday</h3>
+            <table class="stats-week-day">
+                <tr>
+                    <th>Mo</th>
+                    <th>Tu</th>
+                    <th>We</th>
+                    <th>Th</th>
+                    <th>Fr</th>
+                    <th>Sa</th>
+                    <th>Su</th>
+                </tr>
+                <tr>
+                    <td>{{ weekDayStats[1] }}</td>
+                    <td>{{ weekDayStats[2] }}</td>
+                    <td>{{ weekDayStats[3] }}</td>
+                    <td>{{ weekDayStats[4] }}</td>
+                    <td>{{ weekDayStats[5] }}</td>
+                    <td>{{ weekDayStats[6] }}</td>
+                    <td>{{ weekDayStats[0] }}</td>
+                </tr>
+            </table>
+        </section>
+        <section class="stats-day-hour">
+            <h3>Counts by hour of day</h3>
+            <table class="stats-day-hour">
+                <tr>
+                    {% for n in range(24) %}
+                        <th>{{ "%02d"|format(n) }}</th>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for n in range(24) %}
+                        <td>{{ dayHourStats[n] }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </section>
+    </section>
+{% endblock %}
