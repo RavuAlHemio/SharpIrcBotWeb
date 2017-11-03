@@ -169,8 +169,8 @@ class CountersController extends Controller
         $arrTotals = [
             'users' => 0,
             'count' => 0,
-            'weekDayToCount' => array_fill(0, 6, 0),
-            'dayHourToCount' => array_fill(0, 23, 0)
+            'weekDayToCount' => array_fill(0, 7, 0),
+            'dayHourToCount' => array_fill(0, 24, 0)
         ];
         foreach ($arrUsersAndCounts as $arrUserAndCount)
         {
@@ -180,8 +180,8 @@ class CountersController extends Controller
             $arrUsernameToUser[$strPerp] = [
                 'username' => $strPerp,
                 'count' => $arrUserAndCount['counterValue'],
-                'weekDayToCount' => array_fill(0, 6, 0),
-                'dayHourToCount' => array_fill(0, 23, 0)
+                'weekDayToCount' => array_fill(0, 7, 0),
+                'dayHourToCount' => array_fill(0, 24, 0)
             ];
 
             $arrTotals['users'] += 1;
