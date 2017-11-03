@@ -183,7 +183,7 @@ class CountersController extends Controller
         $arrDayHourToCount = array_fill(0, 24, 0);
         foreach ($arrDayHourStats as $arrDayHourStat)
         {
-            $arrDayHourToCount[(int)$arrDayHourStat['hour_of_day']] = $arrWeekDayStat['count'];
+            $arrDayHourToCount[(int)$arrDayHourStat['hour_of_day']] = $arrDayHourStat['count'];
         }
 
         return $this->render('@RavuAlHemioSharpIrcBotWeb/counters/counter.html.twig', [
