@@ -43,12 +43,12 @@
             <h3>Counts by hour of day</h3>
             <table class="stats-day-hour">
                 <tr>
-                    {% for n in range(24) %}
+                    {% for n in range(0, 23) %}
                         <th>{{ "%02d"|format(n) }}</th>
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for n in range(24) %}
+                    {% for n in range(0, 23) %}
                         <td>{{ dayHourStats[n] }}</td>
                     {% endfor %}
                 </tr>
