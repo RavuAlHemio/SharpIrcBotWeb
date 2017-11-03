@@ -72,11 +72,11 @@ class CountersController extends Controller
             COUNT(*) AS count
         FROM
             counters.entries
-        GROUP BY
-            EXTRACT(DOW FROM happened_timestamp)
         WHERE
             command = :command
             AND expunged = FALSE
+        GROUP BY
+            EXTRACT(DOW FROM happened_timestamp)
     ';
 
     const QUERY_POSTGRES_GET_DAYHOUR_STATS_BY_COMMAND = '
@@ -85,11 +85,11 @@ class CountersController extends Controller
             COUNT(*) AS count
         FROM
             counters.entries
-        GROUP BY
-            EXTRACT(HOUR FROM happened_timestamp)
         WHERE
             command = :command
             AND expunged = FALSE
+        GROUP BY
+            EXTRACT(HOUR FROM happened_timestamp)
     ';
 
     public function overviewAction()
