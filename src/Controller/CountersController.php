@@ -150,9 +150,10 @@ class CountersController extends Controller
 
         $objQuery = $objEM->createQuery(static::QUERY_GET_TOP_FIVE_MESSAGES);
         $objQuery->setParameter('command', $strCommand);
-        $arrTopFive = $objQuery->getResult();
+        $objQuery->setMaxResults(10);
+        $arrLatestResults = $objQuery->getResult();
         $arrTemplateRecent = [];
-        foreach ($arrTopFive as $objEntry)
+        foreach ($arrLatestResults as $objEntry)
         {
             /** @var CounterEntry $objEntry */
             $arrTemplateRecent[] = [
