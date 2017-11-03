@@ -228,17 +228,17 @@ class CountersController extends Controller
         {
             $strPerp = $arrDayHourStat['perp'];
             $intHour = (int)$arrDayHourStat['hour_of_day'];
-            $arrUserToTimeStats[$strPerp]['dayHourToCount'][$intHour] = $arrDayHourStat['count'];
+            $arrUsernameToUser[$strPerp]['dayHourToCount'][$intHour] = $arrDayHourStat['count'];
             $arrTotals['dayHourToCount'][$intHour] += $arrDayHourStat['count'];
         }
 
-        ksort($arrUserToTimeStats);
+        ksort($arrUsernameToUser);
 
         return $this->render('@RavuAlHemioSharpIrcBotWeb/counters/counter.html.twig', [
             'command' => $strCommand,
             'recentEntries' => $arrTemplateRecent,
             'totals' => $arrTotals,
-            'users' => array_values($arrUserToTimeStats),
+            'users' => array_values($arrUsernameToUser),
             'weekdayOrder' => [1, 2, 3, 4, 5, 6, 0]
         ]);
     }
