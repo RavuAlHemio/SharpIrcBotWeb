@@ -48,14 +48,14 @@
                     <tr class="entry">
                         <td class="user">{{ user.username|e }}</td>
                         {% for wd in weekday_order %}
-                            <td class="weekday">{{ user.weekDayToCount[wd] }}</td>
+                            <td class="weekday count">{{ user.weekDayToCount[wd] }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
                 <tr class="totals">
                     <td class="user">Total</td>
                     {% for wd in weekday_order %}
-                        <td class="weekday">{{ totals.weekDayToCount[wd] }}</td>
+                        <td class="weekday count">{{ totals.weekDayToCount[wd] }}</td>
                     {% endfor %}
                 </tr>
             </table>
@@ -73,14 +73,14 @@
                     <tr class="entry">
                         <td class="user">{{ user.username|e }}</td>
                         {% for n in range(0, 23) %}
-                            <td>{{ user.dayHourToCount[n] }}</td>
+                            <td class="hour count">{{ user.dayHourToCount[n] }}</td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
                 <tr class="totals">
                     <td class="user">Total</td>
                     {% for n in range(0, 23) %}
-                        <td class="weekday">{{ totals.dayHourToCount[n] }}</td>
+                        <td class="hour count">{{ totals.dayHourToCount[n] }}</td>
                     {% endfor %}
                 </tr>
             </table>
