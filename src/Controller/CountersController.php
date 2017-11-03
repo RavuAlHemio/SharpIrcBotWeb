@@ -54,6 +54,19 @@ class CountersController extends Controller
             AND ce.blnExpunged = FALSE
     ';
 
+    const QUERY_GET_PER_USER_COUNT_BY_COMMAND = '
+        SELECT
+            COALESCE(ce.strPerpUsername, ce.strPerpNickname) perp,
+            COUNT(ce.strID) counterValue
+        FROM
+            RavuAlHemioSharpIrcBotWebBundle:CounterEntry ce
+        WHERE
+            ce.strCommand = :command
+            AND ce.blnExpunged = FALSE
+        GROUP BY
+            perp
+    ';
+
     const QUERY_GET_TOP_FIVE_MESSAGES = '
         SELECT
             ce
@@ -66,8 +79,9 @@ class CountersController extends Controller
             ce.dtmHappened DESC
     ';
 
-    const QUERY_POSTGRES_GET_WEEKDAY_STATS_BY_COMMAND = '
+    const QUERY_POSTGRES_GET_WEEKDAY_STATS_PER_USER_BY_COMMAND = '
         SELECT
+            COALESCE(perp_username, perp_nickname) AS perp,
             EXTRACT(DOW FROM happened_timestamp) AS day_of_week,
             COUNT(*) AS count
         FROM
@@ -76,11 +90,13 @@ class CountersController extends Controller
             command = :command
             AND expunged = FALSE
         GROUP BY
+            COALESCE(perp_username, perp_nickname),
             EXTRACT(DOW FROM happened_timestamp)
     ';
 
-    const QUERY_POSTGRES_GET_DAYHOUR_STATS_BY_COMMAND = '
+    const QUERY_POSTGRES_GET_DAYHOUR_STATS_PER_USER_BY_COMMAND = '
         SELECT
+            COALESCE(perp_username, perp_nickname) AS perp,
             EXTRACT(HOUR FROM happened_timestamp) AS hour_of_day,
             COUNT(*) AS count
         FROM
@@ -89,6 +105,7 @@ class CountersController extends Controller
             command = :command
             AND expunged = FALSE
         GROUP BY
+            COALESCE(perp_username, perp_nickname),
             EXTRACT(HOUR FROM happened_timestamp)
     ';
 
@@ -144,9 +161,32 @@ class CountersController extends Controller
     {
         $objEM = $this->getDoctrine()->getManager();
 
-        $objQuery = $objEM->createQuery(static::QUERY_GET_COUNT_BY_COMMAND);
+        $objQuery = $objEM->createQuery(static::QUERY_GET_PER_USER_COUNT_BY_COMMAND);
         $objQuery->setParameter('command', $strCommand);
-        $intCount = $objQuery->getSingleScalarResult();
+        $arrUsersAndCounts = $objQuery->getResult();
+
+        $arrUsernameToUser = [];
+        $arrTotals = [
+            'users' => 0,
+            'count' => 0,
+            'weekDayToCount' => array_fill(0, 7, 0),
+            'dayHourToCount' => array_fill(0, 24, 0)
+        ];
+        foreach ($arrUsersAndCounts as $arrUserAndCount)
+        {
+            $strPerp = $arrUserAndCount['perp'];
+
+            // prepare here
+            $arrUsernameToUser[$strPerp] = [
+                'username' => $strPerp,
+                'count' => $arrUserAndCount['counterValue'],
+                'weekDayToCount' => array_fill(0, 7, 0),
+                'dayHourToCount' => array_fill(0, 24, 0)
+            ];
+
+            $arrTotals['users'] += 1;
+            $arrTotals['count'] += $arrUserAndCount['counterValue'];
+        }
 
         $objQuery = $objEM->createQuery(static::QUERY_GET_TOP_FIVE_MESSAGES);
         $objQuery->setParameter('command', $strCommand);
@@ -165,18 +205,20 @@ class CountersController extends Controller
 
         $objConn = $objEM->getConnection();
 
-        $objStmt = $objConn->prepare(static::QUERY_POSTGRES_GET_WEEKDAY_STATS_BY_COMMAND);
+        $objStmt = $objConn->prepare(static::QUERY_POSTGRES_GET_WEEKDAY_STATS_PER_USER_BY_COMMAND);
         $objStmt->bindValue('command', $strCommand);
         $objStmt->execute();
         $arrWeekDayStats = $objStmt->fetchAll();
 
-        $arrWeekDayToCount = array_fill(0, 7, 0);
         foreach ($arrWeekDayStats as $arrWeekDayStat)
         {
-            $arrWeekDayToCount[(int)$arrWeekDayStat['day_of_week']] = $arrWeekDayStat['count'];
+            $strPerp = $arrWeekDayStat['perp'];
+            $intDOW = (int)$arrWeekDayStat['day_of_week'];
+            $arrUsernameToUser[$strPerp]['weekDayToCount'][$intDOW] = $arrWeekDayStat['count'];
+            $arrTotals['weekDayToCount'][$intDOW] += $arrWeekDayStat['count'];
         }
 
-        $objStmt = $objConn->prepare(static::QUERY_POSTGRES_GET_DAYHOUR_STATS_BY_COMMAND);
+        $objStmt = $objConn->prepare(static::QUERY_POSTGRES_GET_DAYHOUR_STATS_PER_USER_BY_COMMAND);
         $objStmt->bindValue('command', $strCommand);
         $objStmt->execute();
         $arrDayHourStats = $objStmt->fetchAll();
@@ -184,15 +226,20 @@ class CountersController extends Controller
         $arrDayHourToCount = array_fill(0, 24, 0);
         foreach ($arrDayHourStats as $arrDayHourStat)
         {
-            $arrDayHourToCount[(int)$arrDayHourStat['hour_of_day']] = $arrDayHourStat['count'];
+            $strPerp = $arrDayHourStat['perp'];
+            $intHour = (int)$arrDayHourStat['hour_of_day'];
+            $arrUserToTimeStats[$strPerp]['dayHourToCount'][$intHour] = $arrDayHourStat['count'];
+            $arrTotals['dayHourToCount'][$intHour] += $arrDayHourStat['count'];
         }
+
+        ksort($arrUserToTimeStats);
 
         return $this->render('@RavuAlHemioSharpIrcBotWeb/counters/counter.html.twig', [
             'command' => $strCommand,
-            'count' => $intCount,
             'recentEntries' => $arrTemplateRecent,
-            'weekDayStats' => $arrWeekDayToCount,
-            'dayHourStats' => $arrDayHourToCount
+            'totals' => $arrTotals,
+            'users' => array_values($arrUserToTimeStats),
+            'weekdayOrder' => [1, 2, 3, 4, 5, 6, 0]
         ]);
     }
 }

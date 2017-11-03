@@ -5,7 +5,7 @@
 {% block body %}
     <section class="counter">
         <h2>!{{ command|e }}</h2>
-        <p class="count">Count: <span class="counter-value">{{ count }}</span></p>
+        <p class="count">Count: <span class="counter-value">{{ totals.count }}</span></p>
         <section class="latest-entries">
             <h3>Latest entries</h3>
             <table class="latest-entries">
@@ -16,40 +16,71 @@
                 {% endfor %}
             </table>
         </section>
-        <section class="stats-week-day">
-            <h3>Counts by weekday</h3>
-            <table class="stats-week-day">
-                <tr>
-                    <th>Mo</th>
-                    <th>Tu</th>
-                    <th>We</th>
-                    <th>Th</th>
-                    <th>Fr</th>
-                    <th>Sa</th>
-                    <th>Su</th>
+        <section class="stats-user">
+            <h3>Counts by user</h3>
+            <table class="stats-user">
+                <tr class="header">
+                    <th class="user">User</th>
+                    <th class="count">Count</th>
                 </tr>
-                <tr>
-                    <td>{{ weekDayStats[1] }}</td>
-                    <td>{{ weekDayStats[2] }}</td>
-                    <td>{{ weekDayStats[3] }}</td>
-                    <td>{{ weekDayStats[4] }}</td>
-                    <td>{{ weekDayStats[5] }}</td>
-                    <td>{{ weekDayStats[6] }}</td>
-                    <td>{{ weekDayStats[0] }}</td>
+                {% for user in users %}
+                    <tr class="entry">
+                        <td class="user">{{ user.username|e }}</td>
+                        <td class="count">{{ user.count }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+        <section class="stats-user-week-day">
+            <h3>Counts by user and weekday</h3>
+            <table class="stats-user-week-day">
+                <tr class="header">
+                    <th class="user">User</th>
+                    <th class="weekday">Mo</th>
+                    <th class="weekday">Tu</th>
+                    <th class="weekday">We</th>
+                    <th class="weekday">Th</th>
+                    <th class="weekday">Fr</th>
+                    <th class="weekday">Sa</th>
+                    <th class="weekday">Su</th>
+                </tr>
+                {% for user in users %}
+                    <tr class="entry">
+                        <td class="user">{{ user.username|e }}</td>
+                        {% for wd in weekday_order %}
+                            <td class="weekday">{{ user.weekDayToCount[wd] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                <tr class="totals">
+                    <td class="user">Total</td>
+                    {% for wd in weekday_order %}
+                        <td class="weekday">{{ totals.weekDayToCount[wd] }}</td>
+                    {% endfor %}
                 </tr>
             </table>
         </section>
-        <section class="stats-day-hour">
-            <h3>Counts by hour of day</h3>
-            <table class="stats-day-hour">
-                <tr>
+        <section class="stats-user-day-hour">
+            <h3>Counts by user and hour of day</h3>
+            <table class="stats-user-day-hour">
+                <tr class="header">
+                    <th class="user">User</th>
                     {% for n in range(0, 23) %}
-                        <th>{{ "%02d"|format(n) }}</th>
+                        <th class="hour">{{ "%02d"|format(n) }}</th>
                     {% endfor %}
                 </tr>
-                <tr>
+                {% for user in users %}
+                    <tr class="entry">
+                        <td class="user">{{ user.username|e }}</td>
+                        {% for n in range(0, 23) %}
+                            <td>{{ user.dayHourToCount[n] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                <tr class="totals">
+                    <td class="user">Total</td>
                     {% for n in range(0, 23) %}
-                        <td>{{ dayHourStats[n] }}</td>
+                        <td class="weekday">{{ totals.dayHourToCount[n] }}</td>
                     {% endfor %}
                 </tr>
             </table>
