@@ -188,6 +188,16 @@ class CountersController extends Controller
             $arrTotals['count'] += $arrUserAndCount['counterValue'];
         }
 
+        // calculate percentage
+        foreach ($arrUsernameToUser as $strUsername => &$arrUser)
+        {
+            $numHundreds = \bcmul("{$arrUser['count']}", '100', 2);
+            $numPercentage = \bcdiv($numHundreds, "{$arrTotals['count']}", 2);
+
+            $arrUser['percentage'] = $numPercentage;
+        }
+        unset($arrUser);  // reference might dangle otherwise
+
         $objQuery = $objEM->createQuery(static::QUERY_GET_TOP_FIVE_MESSAGES);
         $objQuery->setParameter('command', $strCommand);
         $objQuery->setMaxResults(10);

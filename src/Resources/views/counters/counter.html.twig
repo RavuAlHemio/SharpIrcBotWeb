@@ -22,11 +22,13 @@
                 <tr class="header">
                     <th class="user">User</th>
                     <th class="count">Count</th>
+                    <th class="percentage">Percentage</th>
                 </tr>
                 {% for user in users %}
                     <tr class="entry">
                         <td class="user">{{ user.username|e }}</td>
                         <td class="count">{{ user.count }}</td>
+                        <td class="percentage">{{ user.percentage|e }}%</td>
                     </tr>
                 {% endfor %}
             </table>
