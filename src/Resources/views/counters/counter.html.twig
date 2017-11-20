@@ -2,6 +2,13 @@
 
 {% block title %}Counters{% endblock %}
 
+{% block head %}
+    <script type="text/javascript" src="{{ asset('bundles/ravualhemiosharpircbotweb/counters.js') }}"></script>
+    <script type="text/javascript">
+        Counters.setUpSortingOnLoad();
+    </script>
+{% endblock %}
+
 {% block body %}
     <section class="counter">
         <h2>!{{ command|e }}</h2>
@@ -18,7 +25,7 @@
         </section>
         <section class="stats-user">
             <h3>Counts by user</h3>
-            <table class="stats-user">
+            <table class="stats-user sortable">
                 <tr class="header">
                     <th class="user">User</th>
                     <th class="count">Count</th>
@@ -35,7 +42,7 @@
         </section>
         <section class="stats-user-week-day">
             <h3>Counts by user and weekday</h3>
-            <table class="stats-user-week-day">
+            <table class="stats-user-week-day sortable">
                 <tr class="header">
                     <th class="user">User</th>
                     <th class="weekday">Mo</th>
@@ -64,7 +71,7 @@
         </section>
         <section class="stats-user-day-hour">
             <h3>Counts by user and hour of day</h3>
-            <table class="stats-user-day-hour">
+            <table class="stats-user-day-hour sortable">
                 <tr class="header">
                     <th class="user">User</th>
                     {% for n in range(0, 23) %}
