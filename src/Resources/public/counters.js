@@ -1,6 +1,10 @@
 "use strict";
 var Counters;
 (function (Counters) {
+    function setUpSortingOnLoad() {
+        document.addEventListener('DOMContentLoaded', setUpSorting);
+    }
+    Counters.setUpSortingOnLoad = setUpSortingOnLoad;
     function setUpSorting() {
         var sortableTables = document.querySelectorAll('table.sortable');
         for (var i = 0; i < sortableTables.length; ++i) {
