@@ -18,16 +18,20 @@ var Counters;
             var headerCell = headerCells.item(i);
             headerCell.addEventListener('click', (function (tbl, index) {
                 return function () {
-                    sort(tbl, index);
+                    sort(tbl, index, 0);
                 };
             })(table, i));
         }
     }
-    function sort(table, columnIndex) {
+    function sort(table, columnIndex, tieBreakerIndex) {
+        if (tieBreakerIndex === void 0) { tieBreakerIndex = -1; }
         var curSortColumnIndex = 0;
         var curSortColumnIndexString = table.dataset.sortColumnIndex;
         if (typeof curSortColumnIndexString !== 'undefined') {
             curSortColumnIndex = +curSortColumnIndexString;
+        }
+        if (!isFinite(curSortColumnIndex)) {
+            curSortColumnIndex = 0;
         }
         var reverseSort = false;
         if (curSortColumnIndex == columnIndex) {
@@ -55,7 +59,7 @@ var Counters;
             }
         }
         // sort the entry rows
-        var cmpFunc = getTableRowCompareFunc(columnIndex, 0, reverseSort);
+        var cmpFunc = getTableRowCompareFunc(columnIndex, tieBreakerIndex, reverseSort);
         entryRows.sort(cmpFunc);
         // add them to the table in order
         for (var i = 0; i < preRows.length; ++i) {
@@ -72,26 +76,23 @@ var Counters;
         table.dataset.sortReversed = "" + reverseSort;
     }
     function getTableRowCompareFunc(colIndex, tieBreakerIndex, reverse) {
-        if (reverse) {
-            return function (a, b) {
-                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
-            };
-        }
-        else {
-            return function (a, b) {
-                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
-            };
-        }
+        return function (a, b) {
+            return tableRowCompareFunc(colIndex, tieBreakerIndex, reverse, a, b);
+        };
     }
-    function tableRowCompareFunc(colIndex, tieBreakerIndex, a, b) {
+    function tableRowCompareFunc(colIndex, tieBreakerIndex, reverse, a, b) {
         var aCells = a.querySelectorAll('td');
         var bCells = b.querySelectorAll('td');
         // compare by regular index
         var aValue = aCells.item(colIndex).textContent;
         var bValue = bCells.item(colIndex).textContent;
         var ret = valueCompareFunc(aValue, bValue);
-        if (ret == 0 && colIndex != tieBreakerIndex) {
+        if (reverse) {
+            ret = -ret;
+        }
+        if (ret == 0 && tieBreakerIndex >= 0 && colIndex != tieBreakerIndex) {
             // try breaking the tie
+            // (tiebreaks are always ascending!)
             var aTieValue = aCells.item(tieBreakerIndex).textContent;
             var bTieValue = bCells.item(tieBreakerIndex).textContent;
             ret = valueCompareFunc(aTieValue, bTieValue);

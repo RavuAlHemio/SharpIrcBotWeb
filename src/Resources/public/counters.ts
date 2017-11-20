@@ -25,13 +25,13 @@ module Counters
             let headerCell: HTMLTableHeaderCellElement = <HTMLTableHeaderCellElement>headerCells.item(i);
             headerCell.addEventListener('click', (function (tbl: HTMLTableElement, index: number) {
                 return function () {
-                    sort(tbl, index);
+                    sort(tbl, index, 0);
                 };
             })(table, i));
         }
     }
 
-    function sort(table: HTMLTableElement, columnIndex: number): void
+    function sort(table: HTMLTableElement, columnIndex: number, tieBreakerIndex: number = -1): void
     {
         let curSortColumnIndex: number = 0;
 
@@ -39,6 +39,10 @@ module Counters
         if (typeof curSortColumnIndexString !== 'undefined')
         {
             curSortColumnIndex = +curSortColumnIndexString;
+        }
+        if (!isFinite(curSortColumnIndex))
+        {
+            curSortColumnIndex = 0;
         }
 
         let reverseSort: boolean = false;
@@ -55,7 +59,7 @@ module Counters
         let entryRows: HTMLTableRowElement[] = [];
         let postRows: HTMLTableRowElement[] = [];
         let seenEntries: boolean = false;
-        for (let i = 0; i < rowList.length; ++i)
+        for (let i: number = 0; i < rowList.length; ++i)
         {
             let row: HTMLTableRowElement = rowList.item(i);
 
@@ -76,7 +80,7 @@ module Counters
 
         // sort the entry rows
         let cmpFunc: (a: HTMLTableRowElement, b: HTMLTableRowElement) => number
-            = getTableRowCompareFunc(columnIndex, 0, reverseSort);
+            = getTableRowCompareFunc(columnIndex, tieBreakerIndex, reverseSort);
         entryRows.sort(cmpFunc);
 
         // add them to the table in order
@@ -100,21 +104,12 @@ module Counters
 
     function getTableRowCompareFunc(colIndex: number, tieBreakerIndex: number, reverse: boolean): (a: HTMLTableRowElement, b: HTMLTableRowElement) => number
     {
-        if (reverse)
-        {
-            return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
-                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
-            };
-        }
-        else
-        {
-            return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
-                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
-            };
-        }
+        return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
+            return tableRowCompareFunc(colIndex, tieBreakerIndex, reverse, a, b);
+        };
     }
 
-    function tableRowCompareFunc(colIndex: number, tieBreakerIndex: number, a: HTMLTableRowElement, b: HTMLTableRowElement): number
+    function tableRowCompareFunc(colIndex: number, tieBreakerIndex: number, reverse: boolean, a: HTMLTableRowElement, b: HTMLTableRowElement): number
     {
         let aCells: NodeListOf<HTMLTableDataCellElement> = a.querySelectorAll('td');
         let bCells: NodeListOf<HTMLTableDataCellElement> = b.querySelectorAll('td');
@@ -124,10 +119,15 @@ module Counters
         let bValue: string|null = bCells.item(colIndex).textContent;
 
         let ret: number = valueCompareFunc(aValue, bValue);
+        if (reverse)
+        {
+            ret = -ret;
+        }
 
-        if (ret == 0 && colIndex != tieBreakerIndex)
+        if (ret == 0 && tieBreakerIndex >= 0 && colIndex != tieBreakerIndex)
         {
             // try breaking the tie
+            // (tiebreaks are always ascending!)
             let aTieValue: string|null = aCells.item(tieBreakerIndex).textContent;
             let bTieValue: string|null = bCells.item(tieBreakerIndex).textContent;
             ret = valueCompareFunc(aTieValue, bTieValue);
@@ -135,7 +135,7 @@ module Counters
 
         return ret;
     }
-    
+
     function valueCompareFunc(aValue: string|null, bValue: string|null): number
     {
         // nulls first
