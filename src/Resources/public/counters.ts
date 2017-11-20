@@ -103,13 +103,13 @@ module Counters
         if (reverse)
         {
             return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
-                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
+                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
         else
         {
             return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
-                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
+                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
     }
