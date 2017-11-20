@@ -24,6 +24,7 @@ module Counters
         {
             let headerCell: HTMLTableHeaderCellElement = <HTMLTableHeaderCellElement>headerCells.item(i);
             headerCell.addEventListener('click', getSortFunction(table, i));
+            headerCell.style.cursor = 'pointer';
         }
     }
 
