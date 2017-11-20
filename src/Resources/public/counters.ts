@@ -23,12 +23,15 @@ module Counters
         for (let i: number = 0; i < headerCells.length; ++i)
         {
             let headerCell: HTMLTableHeaderCellElement = <HTMLTableHeaderCellElement>headerCells.item(i);
-            headerCell.addEventListener('click', (function (tbl: HTMLTableElement, index: number) {
-                return function () {
-                    sort(tbl, index, 0);
-                };
-            })(table, i));
+            headerCell.addEventListener('click', getSortFunction(table, i));
         }
+    }
+
+    function getSortFunction(table: HTMLTableElement, index: number): () => void
+    {
+        return function () {
+            sort(table, index, 0);
+        };
     }
 
     function sort(table: HTMLTableElement, columnIndex: number, tieBreakerIndex: number = -1): void
