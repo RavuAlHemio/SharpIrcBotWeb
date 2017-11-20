@@ -156,12 +156,15 @@ module Counters
             return 1;
         }
 
-        let numeric: RegExp = /^[0-9]+(?:\.[0-9]*)?$/;
-        if (numeric.test(aValue) && numeric.test(bValue))
+        let numericRE: RegExp = /^([0-9]+(?:\.[0-9]*)?)[%]?$/;
+        let numericA: RegExpExecArray|null = numericRE.exec(aValue);
+        let numericB: RegExpExecArray|null = numericRE.exec(bValue);
+
+        if (numericA != null && numericB != null)
         {
             // numeric compare
-            let aNumber: number = +aValue;
-            let bNumber: number = +bValue;
+            let aNumber: number = +(numericA[1]);
+            let bNumber: number = +(numericB[1]);
 
             if (aNumber < bNumber)
             {

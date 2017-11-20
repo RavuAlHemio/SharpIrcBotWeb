@@ -74,12 +74,12 @@ var Counters;
     function getTableRowCompareFunc(colIndex, tieBreakerIndex, reverse) {
         if (reverse) {
             return function (a, b) {
-                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
+                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
         else {
             return function (a, b) {
-                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
+                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
     }
@@ -112,10 +112,20 @@ var Counters;
             // a(notnull) > b(null)
             return 1;
         }
-        var integral = /^[0-9]+$/;
-        if (integral.test(aValue) && integral.test(bValue)) {
+        var numericRE = /^([0-9]+(?:\.[0-9]*)?)[%]?$/;
+        var numericA = numericRE.exec(aValue);
+        var numericB = numericRE.exec(bValue);
+        if (numericA != null && numericB != null) {
             // numeric compare
-            return ((+bValue) - (+aValue));
+            var aNumber = +(numericA[1]);
+            var bNumber = +(numericB[1]);
+            if (aNumber < bNumber) {
+                return -1;
+            }
+            else if (aNumber == bNumber) {
+                return 0;
+            }
+            return 1;
         }
         return aValue.localeCompare(bValue);
     }
