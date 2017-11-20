@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "strictNullChecks": true
+    },
+    "include": [
+        "src/Resources/public/*.ts"
+    ]
+}
