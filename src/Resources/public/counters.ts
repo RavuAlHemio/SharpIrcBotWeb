@@ -23,19 +23,22 @@ module Counters
         for (let i: number = 0; i < headerCells.length; ++i)
         {
             let headerCell: HTMLTableHeaderCellElement = <HTMLTableHeaderCellElement>headerCells.item(i);
-            headerCell.addEventListener('click', getSortFunction(table, i));
+            headerCell.addEventListener('click', getSortFunction(headerCell, table, i));
+
+            // UX: now that sorting is possible, change cursor in table header to hand
             headerCell.style.cursor = 'pointer';
         }
     }
 
-    function getSortFunction(table: HTMLTableElement, index: number): () => void
+    function getSortFunction(headerCell: HTMLTableHeaderCellElement, table: HTMLTableElement, index: number): () => void
     {
         return function () {
-            sort(table, index, 0);
+            sort(headerCell, table, index, 0);
         };
     }
 
-    function sort(table: HTMLTableElement, columnIndex: number, tieBreakerIndex: number = -1): void
+    function sort(headerCell: HTMLTableHeaderCellElement, table: HTMLTableElement, columnIndex: number,
+            tieBreakerIndex: number = -1): void
     {
         let curSortColumnIndex: number = 0;
 
@@ -104,6 +107,21 @@ module Counters
         // store
         table.dataset.sortColumnIndex = "" + columnIndex;
         table.dataset.sortReversed = "" + reverseSort;
+
+        // UX: make current sort information visible
+        // => remove sort-column markers from elsewhere
+        let headers: NodeListOf<HTMLTableHeaderCellElement> = table.querySelectorAll('th');
+        for (let i: number = 0; i < headers.length; ++i)
+        {
+            let header: HTMLTableHeaderCellElement = headers.item(i);
+            header.classList.remove('sort-key');
+            header.classList.remove('sort-asc');
+            header.classList.remove('sort-desc');
+        }
+        // => add sort-column marker to sorted column
+        headerCell.classList.add('sort-key');
+        // => add direction of marker
+        headerCell.classList.add(reverseSort ? 'sort-desc' : 'sort-asc');
     }
 
     function getTableRowCompareFunc(colIndex: number, tieBreakerIndex: number, reverse: boolean): (a: HTMLTableRowElement, b: HTMLTableRowElement) => number
