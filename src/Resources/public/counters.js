@@ -16,14 +16,17 @@ var Counters;
         var headerCells = table.querySelectorAll('th');
         for (var i = 0; i < headerCells.length; ++i) {
             var headerCell = headerCells.item(i);
-            headerCell.addEventListener('click', (function (tbl, index) {
-                return function () {
-                    sort(tbl, index, 0);
-                };
-            })(table, i));
+            headerCell.addEventListener('click', getSortFunction(headerCell, table, i));
+            // UX: now that sorting is possible, change cursor in table header to hand
+            headerCell.style.cursor = 'pointer';
         }
     }
-    function sort(table, columnIndex, tieBreakerIndex) {
+    function getSortFunction(headerCell, table, index) {
+        return function () {
+            sort(headerCell, table, index, 0);
+        };
+    }
+    function sort(headerCell, table, columnIndex, tieBreakerIndex) {
         if (tieBreakerIndex === void 0) { tieBreakerIndex = -1; }
         var curSortColumnIndex = 0;
         var curSortColumnIndexString = table.dataset.sortColumnIndex;
@@ -74,6 +77,19 @@ var Counters;
         // store
         table.dataset.sortColumnIndex = "" + columnIndex;
         table.dataset.sortReversed = "" + reverseSort;
+        // UX: make current sort information visible
+        // => remove sort-column markers from elsewhere
+        var headers = table.querySelectorAll('th');
+        for (var i = 0; i < headers.length; ++i) {
+            var header = headers.item(i);
+            header.classList.remove('sort-key');
+            header.classList.remove('sort-asc');
+            header.classList.remove('sort-desc');
+        }
+        // => add sort-column marker to sorted column
+        headerCell.classList.add('sort-key');
+        // => add direction of marker
+        headerCell.classList.add(reverseSort ? 'sort-desc' : 'sort-asc');
     }
     function getTableRowCompareFunc(colIndex, tieBreakerIndex, reverse) {
         return function (a, b) {
