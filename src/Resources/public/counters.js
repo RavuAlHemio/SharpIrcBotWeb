@@ -93,7 +93,7 @@ var Counters;
         if (ret == 0 && colIndex != tieBreakerIndex) {
             // try breaking the tie
             var aTieValue = aCells.item(tieBreakerIndex).textContent;
-            var bTieValue = aCells.item(tieBreakerIndex).textContent;
+            var bTieValue = bCells.item(tieBreakerIndex).textContent;
             ret = valueCompareFunc(aTieValue, bTieValue);
         }
         return ret;
