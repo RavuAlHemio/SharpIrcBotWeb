@@ -129,7 +129,7 @@ module Counters
         {
             // try breaking the tie
             let aTieValue: string|null = aCells.item(tieBreakerIndex).textContent;
-            let bTieValue: string|null = aCells.item(tieBreakerIndex).textContent;
+            let bTieValue: string|null = bCells.item(tieBreakerIndex).textContent;
             ret = valueCompareFunc(aTieValue, bTieValue);
         }
 
