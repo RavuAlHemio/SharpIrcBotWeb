@@ -156,11 +156,22 @@ module Counters
             return 1;
         }
 
-        let integral: RegExp = /^[0-9]+$/;
-        if (integral.test(aValue) && integral.test(bValue))
+        let numeric: RegExp = /^[0-9]+(?:\.[0-9]*)?$/;
+        if (numeric.test(aValue) && numeric.test(bValue))
         {
             // numeric compare
-            return ((+bValue) - (+aValue));
+            let aNumber: number = +aValue;
+            let bNumber: number = +bValue;
+
+            if (aNumber < bNumber)
+            {
+                return -1;
+            }
+            else if (aNumber == bNumber)
+            {
+                return 0;
+            }
+            return 1;
         }
 
         return aValue.localeCompare(bValue);
