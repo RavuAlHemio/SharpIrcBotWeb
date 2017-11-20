@@ -1,20 +1,20 @@
 "use strict";
 module Thanks
 {
-    var pinnedHighlight: boolean = false;
+    let pinnedHighlight: boolean = false;
 
     export function setUpHighlighting(): void
     {
-        var countCells: NodeListOf<Element> = document.querySelectorAll('table.thanks-grid td.thanks-count');
-        for (var i: number = 0; i < countCells.length; ++i)
+        let countCells: NodeListOf<Element> = document.querySelectorAll('table.thanks-grid td.thanks-count');
+        for (let i: number = 0; i < countCells.length; ++i)
         {
-            var countCell = <HTMLTableDataCellElement>countCells.item(i);
+            let countCell = <HTMLTableDataCellElement>countCells.item(i);
             countCell.addEventListener('mouseenter', bind(countCell, cellMouseEnter));
             countCell.addEventListener('mouseleave', bind(countCell, cellMouseExit));
             countCell.addEventListener('click', bind(countCell, cellClicked));
         }
 
-        var spacer = document.querySelector('table.thanks-grid td.top-left-spacer');
+        let spacer = document.querySelector('table.thanks-grid td.top-left-spacer');
         if (spacer !== null)
         {
             spacer.addEventListener('click', spacerClicked);
@@ -47,20 +47,20 @@ module Thanks
 
     function getCellsHitByHighlight(targetCell: HTMLTableCellElement): HTMLTableCellElement[]
     {
-        var ret: HTMLTableCellElement[] = [];
+        let ret: HTMLTableCellElement[] = [];
 
         // find the table
-        var tableElement: Element = targetCell;
+        let tableElement: Element|null = targetCell;
         while (tableElement != null && tableElement.tagName.toLowerCase() != 'table')
         {
             tableElement = tableElement.parentElement;
         }
-        var table: HTMLTableElement = <HTMLTableElement>tableElement;
-        var cells: NodeListOf<HTMLTableDataCellElement> = table.getElementsByTagName('td');
+        let table: HTMLTableElement = <HTMLTableElement>tableElement;
+        let cells: NodeListOf<HTMLTableDataCellElement> = table.getElementsByTagName('td');
 
-        for (var i: number = 0; i < cells.length; ++i)
+        for (let i: number = 0; i < cells.length; ++i)
         {
-            var cell: HTMLTableDataCellElement = cells.item(i);
+            let cell: HTMLTableDataCellElement = cells.item(i);
             if (highlightCriterion(targetCell, cell))
             {
                 ret.push(cell);
@@ -104,7 +104,7 @@ module Thanks
         }
 
         // get all the hit cells
-        var hitCells = getCellsHitByHighlight(relativeToCell);
+        let hitCells = getCellsHitByHighlight(relativeToCell);
 
         // highlight them
         hitCells.forEach(function (c: HTMLTableCellElement) {
@@ -126,7 +126,7 @@ module Thanks
         }
 
         // get all the hit cells
-        var hitCells = getCellsHitByHighlight(relativeToCell);
+        let hitCells = getCellsHitByHighlight(relativeToCell);
 
         // highlight them
         hitCells.forEach(function (c: HTMLTableCellElement) {
@@ -143,8 +143,8 @@ module Thanks
             return;
         }
 
-        var cells = document.getElementsByTagName('td');
-        for (var i: number = 0; i < cells.length; ++i)
+        let cells = document.getElementsByTagName('td');
+        for (let i: number = 0; i < cells.length; ++i)
         {
             cells.item(i).classList.remove('highlight');
             cells.item(i).classList.remove('bold-highlight');
