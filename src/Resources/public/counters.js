@@ -55,7 +55,7 @@ var Counters;
             }
         }
         // sort the entry rows
-        var cmpFunc = getTableRowCompareFunc(columnIndex, reverseSort);
+        var cmpFunc = getTableRowCompareFunc(columnIndex, 0, reverseSort);
         entryRows.sort(cmpFunc);
         // add them to the table in order
         for (var i = 0; i < preRows.length; ++i) {
@@ -71,23 +71,34 @@ var Counters;
         table.dataset.sortColumnIndex = "" + columnIndex;
         table.dataset.sortReversed = "" + reverseSort;
     }
-    function getTableRowCompareFunc(colIndex, reverse) {
+    function getTableRowCompareFunc(colIndex, tieBreakerIndex, reverse) {
         if (reverse) {
             return function (a, b) {
-                return tableRowCompareFunc(colIndex, a, b);
+                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
         else {
             return function (a, b) {
-                return -tableRowCompareFunc(colIndex, a, b);
+                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
     }
-    function tableRowCompareFunc(colIndex, a, b) {
-        var aCell = a.querySelectorAll('td').item(colIndex);
-        var bCell = b.querySelectorAll('td').item(colIndex);
-        var aValue = aCell.textContent;
-        var bValue = bCell.textContent;
+    function tableRowCompareFunc(colIndex, tieBreakerIndex, a, b) {
+        var aCells = a.querySelectorAll('td');
+        var bCells = b.querySelectorAll('td');
+        // compare by regular index
+        var aValue = aCells.item(colIndex).textContent;
+        var bValue = bCells.item(colIndex).textContent;
+        var ret = valueCompareFunc(aValue, bValue);
+        if (ret == 0 && colIndex != tieBreakerIndex) {
+            // try breaking the tie
+            var aTieValue = aCells.item(tieBreakerIndex).textContent;
+            var bTieValue = aCells.item(tieBreakerIndex).textContent;
+            ret = valueCompareFunc(aTieValue, bTieValue);
+        }
+        return ret;
+    }
+    function valueCompareFunc(aValue, bValue) {
         // nulls first
         if (aValue === null) {
             if (bValue === null) {

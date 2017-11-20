@@ -76,7 +76,7 @@ module Counters
 
         // sort the entry rows
         let cmpFunc: (a: HTMLTableRowElement, b: HTMLTableRowElement) => number
-            = getTableRowCompareFunc(columnIndex, reverseSort);
+            = getTableRowCompareFunc(columnIndex, 0, reverseSort);
         entryRows.sort(cmpFunc);
 
         // add them to the table in order
@@ -98,32 +98,46 @@ module Counters
         table.dataset.sortReversed = "" + reverseSort;
     }
 
-    function getTableRowCompareFunc(colIndex: number, reverse: boolean): (a: HTMLTableRowElement, b: HTMLTableRowElement) => number
+    function getTableRowCompareFunc(colIndex: number, tieBreakerIndex: number, reverse: boolean): (a: HTMLTableRowElement, b: HTMLTableRowElement) => number
     {
         if (reverse)
         {
             return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
-                return tableRowCompareFunc(colIndex, a, b);
+                return tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
         else
         {
             return function (a: HTMLTableRowElement, b: HTMLTableRowElement) {
-                return -tableRowCompareFunc(colIndex, a, b);
+                return -tableRowCompareFunc(colIndex, tieBreakerIndex, a, b);
             };
         }
     }
 
-    function tableRowCompareFunc(colIndex: number, a: HTMLTableRowElement, b: HTMLTableRowElement): number
+    function tableRowCompareFunc(colIndex: number, tieBreakerIndex: number, a: HTMLTableRowElement, b: HTMLTableRowElement): number
     {
-        let aCell: HTMLTableDataCellElement =
-            a.querySelectorAll('td').item(colIndex);
-        let bCell: HTMLTableDataCellElement =
-            b.querySelectorAll('td').item(colIndex);
+        let aCells: NodeListOf<HTMLTableDataCellElement> = a.querySelectorAll('td');
+        let bCells: NodeListOf<HTMLTableDataCellElement> = b.querySelectorAll('td');
 
-        let aValue: string|null = aCell.textContent;
-        let bValue: string|null = bCell.textContent;
+        // compare by regular index
+        let aValue: string|null = aCells.item(colIndex).textContent;
+        let bValue: string|null = bCells.item(colIndex).textContent;
 
+        let ret: number = valueCompareFunc(aValue, bValue);
+
+        if (ret == 0 && colIndex != tieBreakerIndex)
+        {
+            // try breaking the tie
+            let aTieValue: string|null = aCells.item(tieBreakerIndex).textContent;
+            let bTieValue: string|null = aCells.item(tieBreakerIndex).textContent;
+            ret = valueCompareFunc(aTieValue, bTieValue);
+        }
+
+        return ret;
+    }
+    
+    function valueCompareFunc(aValue: string|null, bValue: string|null): number
+    {
         // nulls first
         if (aValue === null)
         {
