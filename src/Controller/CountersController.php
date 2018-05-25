@@ -266,7 +266,7 @@ class CountersController extends Controller
         foreach ($arrYearMonthStats as $arrYearMonthStat)
         {
             $strPerp = $arrYearMonthStat['perp'];
-            $intMonth = (int)$arrYearMonthStat['month_of_year'];
+            $intMonth = (int)$arrYearMonthStat['month_of_year'] - 1;
             $arrUsernameToUser[$strPerp]['yearMonthToCount'][$intMonth] = $arrYearMonthStat['count'];
             $arrTotals['yearMonthToCount'][$intMonth] += $arrYearMonthStat['count'];
         }
