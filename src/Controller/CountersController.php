@@ -109,6 +109,21 @@ class CountersController extends Controller
             EXTRACT(HOUR FROM happened_timestamp)
     ';
 
+    const QUERY_POSTGRES_GET_YEARMONTH_STATS_PER_USER_BY_COMMAND = '
+        SELECT
+            COALESCE(perp_username, perp_nickname) AS perp,
+            EXTRACT(MONTH FROM happened_timestamp) AS month_of_year,
+            COUNT(*) AS count
+        FROM
+            counters.entries
+        WHERE
+            command = :command
+            AND expunged = FALSE
+        GROUP BY
+            COALESCE(perp_username, perp_nickname),
+            EXTRACT(MONTH FROM happened_timestamp)
+    ';
+
     public function overviewAction()
     {
         $objEM = $this->getDoctrine()->getManager();
@@ -239,6 +254,19 @@ class CountersController extends Controller
             $intHour = (int)$arrDayHourStat['hour_of_day'];
             $arrUsernameToUser[$strPerp]['dayHourToCount'][$intHour] = $arrDayHourStat['count'];
             $arrTotals['dayHourToCount'][$intHour] += $arrDayHourStat['count'];
+        }
+
+        $objStmt = $objConn->prepare(static::QUERY_POSTGRES_GET_YEARMONTH_STATS_PER_USER_BY_COMMAND);
+        $objStmt->bindValue('command', $strCommand);
+        $objStmt->execute();
+        $arrYearMonthStats = $objStmt->fetchAll();
+
+        foreach ($arrYearMonthStats as $arrYearMonthStat)
+        {
+            $strPerp = $arrYearMonthStat['perp'];
+            $intMonth = (int)$arrYearMonthStat['year_of_month'];
+            $arrUsernameToUser[$strPerp]['yearMonthToCount'][$intMonth] = $arrYearMonthStat['count'];
+            $arrTotals['yearMonthToCount'][$intMonth] += $arrYearMonthStat['count'];
         }
 
         ksort($arrUsernameToUser);

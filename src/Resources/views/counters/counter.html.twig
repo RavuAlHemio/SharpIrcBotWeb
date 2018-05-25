@@ -94,5 +94,30 @@
                 </tr>
             </table>
         </section>
+        <section class="stats-user-year-month">
+            <h3>Counts by user and month of year</h3>
+            <table class="stats-user-year-month">
+                <tr class="header">
+                    <th class="user">User</th>
+                    {% for n in range(1, 12) %}
+                        <th class="month">{{ "%02d"|format(n) }}</th>
+                    {% endfor %}
+                </tr>
+                {% for user in users %}
+                    <tr class="entry">
+                        <td class="user">{{ user.username|e }}</td>
+                        {% for n in range(1, 12) %}
+                            <td class="hour count">{{ user.yearMonthToCount[n] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                <tr class="totals">
+                    <td class="user">Total</td>
+                    {% for n in range(1, 12) %}
+                        <td class="hour count">{{ totals.yearMonthToCount[n] }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </section>
     </section>
 {% endblock %}
