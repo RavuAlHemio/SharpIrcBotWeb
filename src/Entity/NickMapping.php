@@ -14,7 +14,7 @@ class NickMapping
     /**
      * @var BaseNickname
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="NickMapping", inversedBy="arrMappings")
+     * @ORM\ManyToOne(targetEntity="BaseNickname", inversedBy="arrMappings")
      * @ORM\JoinColumn(name="base_nickname", referencedColumnName="nickname")
      */
     public $objBaseNickname;
