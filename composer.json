@@ -12,9 +12,9 @@
     "require": {
         "php": ">=7.0",
         "ext-mbstring": "*",
-        "symfony/framework-bundle": "^3.0",
-        "doctrine/orm": "v2.5.4",
-        "doctrine/doctrine-bundle": "^1.6"
+        "symfony/framework-bundle": "^3.0|^4.0",
+        "doctrine/orm": "^v2.6",
+        "doctrine/doctrine-bundle": "^1.9"
     },
     "conflict": {
     },
