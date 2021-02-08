@@ -4,10 +4,10 @@ namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\CounterEntry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Twig\Environment;
 
 
-class CountersController extends AbstractController
+class CountersController extends BaseController
 {
     const QUERY_GET_ALL_COUNTER_VALUES = '
         SELECT
@@ -126,7 +126,7 @@ class CountersController extends AbstractController
             EXTRACT(MONTH FROM happened_timestamp)
     ';
 
-    public function overviewAction(EntityManagerInterface $objEM)
+    public function overviewAction(EntityManagerInterface $objEM, RouterInterface $objRouter, Environment $objTwig)
     {
         $objQuery = $objEM->createQuery(static::QUERY_GET_ALL_COUNTER_VALUES);
         $arrCommandsAndCounts = $objQuery->getResult();
@@ -154,6 +154,7 @@ class CountersController extends AbstractController
         foreach ($arrCommandsAndCounts as $arrCommandAndCount)
         {
             $strDetailsLink = $this->generateUrl(
+                $objRouter,
                 'ravuAlHemioSharpIrcBot_counters_details',
                 [
                     'strCommand' => $arrCommandAndCount['command']
@@ -167,12 +168,16 @@ class CountersController extends AbstractController
             ];
         }
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/counters/overview.html.twig', [
-            'counters' => $arrTemplateCommandsAndCounts
-        ]);
+        return $this->render(
+            $objTwig,
+            '@RavuAlHemioSharpIrcBotWeb/counters/overview.html.twig',
+            [
+                'counters' => $arrTemplateCommandsAndCounts
+            ]
+        );
     }
 
-    public function detailsAction($strCommand, EntityManagerInterface $objEM)
+    public function detailsAction($strCommand, EntityManagerInterface $objEM, Environment $objTwig)
     {
         $objQuery = $objEM->createQuery(static::QUERY_GET_PER_USER_COUNT_BY_COMMAND);
         $objQuery->setParameter('command', $strCommand);
@@ -271,12 +276,16 @@ class CountersController extends AbstractController
 
         ksort($arrUsernameToUser);
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/counters/counter.html.twig', [
-            'command' => $strCommand,
-            'recentEntries' => $arrTemplateRecent,
-            'totals' => $arrTotals,
-            'users' => array_values($arrUsernameToUser),
-            'weekdayOrder' => [1, 2, 3, 4, 5, 6, 0]
-        ]);
+        return $this->render(
+            $objTwig,
+            '@RavuAlHemioSharpIrcBotWeb/counters/counter.html.twig',
+            [
+                'command' => $strCommand,
+                'recentEntries' => $arrTemplateRecent,
+                'totals' => $arrTotals,
+                'users' => array_values($arrUsernameToUser),
+                'weekdayOrder' => [1, 2, 3, 4, 5, 6, 0]
+            ]
+        );
     }
 }

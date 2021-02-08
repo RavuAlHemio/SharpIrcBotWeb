@@ -4,14 +4,14 @@ namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 
-class NickMappingController extends AbstractController
+class NickMappingController extends BaseController
 {
-    public function nicksAliasesAction(EntityManagerInterface $objEM)
+    public function nicksAliasesAction(EntityManagerInterface $objEM, Environment $objTwig)
     {
         $objQuery = $objEM->createQuery('
             SELECT
@@ -42,9 +42,13 @@ class NickMappingController extends AbstractController
             $strLastBaseNick = $strBaseNick;
         }
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/nick_mapping/nicks_aliases.html.twig', [
-            'nicksAndAliases' => $arrTemplateNicksAndAliases
-        ]);
+        return $this->render(
+            $objTwig,
+            '@RavuAlHemioSharpIrcBotWeb/nick_mapping/nicks_aliases.html.twig',
+            [
+                'nicksAndAliases' => $arrTemplateNicksAndAliases
+            ]
+        );
     }
 
     public function aliasesForNickAction(Request $objRequest, EntityManagerInterface $objEM)

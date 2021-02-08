@@ -5,12 +5,12 @@ namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\QuoteVote;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Twig\Environment;
 
 
-class QuotesController extends AbstractController
+class QuotesController extends BaseController
 {
-    public function topQuotesAction(EntityManagerInterface $objEM)
+    public function topQuotesAction(EntityManagerInterface $objEM, Environment $objTwig)
     {
         $objQuery = $objEM->createQuery('
             SELECT
@@ -44,12 +44,16 @@ class QuotesController extends AbstractController
             $intLastPoints = $intPoints;
         }
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/topquotes.html.twig', [
-            'topQuotes' => $arrTemplateQuotes
-        ]);
+        return $this->render(
+            $objTwig,
+            '@RavuAlHemioSharpIrcBotWeb/quotes/topquotes.html.twig',
+            [
+                'topQuotes' => $arrTemplateQuotes
+            ]
+        );
     }
 
-    public function quotesVotesAction(EntityManagerInterface $objEM)
+    public function quotesVotesAction(EntityManagerInterface $objEM, Environment $objTwig)
     {
         $objQuery = $objEM->createQuery('
             SELECT
@@ -80,9 +84,13 @@ class QuotesController extends AbstractController
             ];
         }
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/quotes/quotesvotes.html.twig', [
-            'quotesVotes' => $arrTemplateQuotes
-        ]);
+        return $this->render(
+            $objTwig,
+            '@RavuAlHemioSharpIrcBotWeb/quotes/quotesvotes.html.twig',
+            [
+                'quotesVotes' => $arrTemplateQuotes
+            ]
+        );
     }
 
     /**
