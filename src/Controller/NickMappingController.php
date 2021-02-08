@@ -3,12 +3,12 @@
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class NickMappingController extends Controller
+class NickMappingController extends AbstractController
 {
     public function nicksAliasesAction()
     {

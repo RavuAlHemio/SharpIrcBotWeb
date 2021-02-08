@@ -5,10 +5,10 @@ namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\QuoteVote;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-class QuotesController extends Controller
+class QuotesController extends AbstractController
 {
     public function topQuotesAction()
     {

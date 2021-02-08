@@ -2,10 +2,10 @@
 
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-class ThanksController extends Controller
+class ThanksController extends AbstractController
 {
     public function thanksGridAction()
     {

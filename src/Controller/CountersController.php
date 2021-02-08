@@ -3,9 +3,9 @@
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\CounterEntry;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class CountersController extends Controller
+class CountersController extends AbstractController
 {
     const QUERY_GET_ALL_COUNTER_VALUES = '
         SELECT
