@@ -1,27 +1,27 @@
 ravuAlHemioSharpIrcBot_counters_overview:
-    path:     /counters
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\Counters::overview'
+    path: /counters
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\CountersController::overviewAction'
 
 ravuAlHemioSharpIrcBot_counters_details:
-    path:     /counters/{strCommand}
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\Counters::details'
+    path: /counters/{strCommand}
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\CountersController::detailsAction'
 
 ravuAlHemioSharpIrcBot_quotes_topQuotes:
-    path:     /topquotes
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\Quotes::topQuotes'
+    path: /topquotes
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\QuotesController::topQuotesAction'
 
 ravuAlHemioSharpIrcBot_quotes_quotesVotes:
-    path:     /quotesvotes
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\Quotes::quotesVotes'
+    path: /quotesvotes
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\QuotesController::quotesVotesAction'
 
 ravuAlHemioSharpIrcBot_thanks_thanksGrid:
-    path:     /thanks
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\Thanks::thanksGrid'
+    path: /thanks
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\ThanksController::thanksGridAction'
 
 ravuAlHemioSharpIrcBot_nickMapping_nicksAliases:
-    path:    /nicks-aliases
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\NickMapping::nicksAliases'
+    path: /nicks-aliases
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\NickMappingController::nicksAliasesAction'
 
 ravuAlHemioSharpIrcBot_nickMapping_aliasesForNick:
-    path:    /aliases
-    controller: 'RavuAlHemioSharpIrcBotWebBundle\NickMapping::aliasesForNick'
+    path: /aliases
+    controller: 'RavuAlHemio\SharpIrcBotWebBundle\Controller\NickMappingController::aliasesForNickAction'
