@@ -2,14 +2,13 @@
 
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 
-class ThanksController extends AbstractController
+class ThanksController
 {
-    public function thanksGridAction()
+    public function thanksGridAction(EntityManagerInterface $objEM)
     {
-        $objEM = $this->getDoctrine()->getManager();
         $objQuery = $objEM->createQuery('
             SELECT
                 te.strThankerLowercase thanker,

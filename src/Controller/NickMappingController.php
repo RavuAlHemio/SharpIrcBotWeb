@@ -2,6 +2,7 @@
 
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\Quote;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,9 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NickMappingController extends AbstractController
 {
-    public function nicksAliasesAction()
+    public function nicksAliasesAction(EntityManagerInterface $objEM)
     {
-        $objEM = $this->getDoctrine()->getManager();
         $objQuery = $objEM->createQuery('
             SELECT
                 bn.strNickname baseNick,
@@ -47,7 +47,7 @@ class NickMappingController extends AbstractController
         ]);
     }
 
-    public function aliasesForNickAction(Request $objRequest)
+    public function aliasesForNickAction(Request $objRequest, EntityManagerInterface $objEM)
     {
         $strNickname = $objRequest->query->get('nick');
         if ($strNickname === null || $strNickname === '')
@@ -56,8 +56,6 @@ class NickMappingController extends AbstractController
         }
         $strLowercaseNickname = mb_strtolower($strNickname, 'UTF-8');
 
-        /** @var \Doctrine\ORM\EntityManager $objEM */
-        $objEM = $this->getDoctrine()->getManager();
         $objAsBaseNickQuery = $objEM->createQuery('
             SELECT
                 bn.strNickname

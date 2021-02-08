@@ -10,10 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class QuotesController extends AbstractController
 {
-    public function topQuotesAction()
+    public function topQuotesAction(EntityManagerInterface $objEM)
     {
-        /** @var EntityManagerInterface $objEM */
-        $objEM = $this->getDoctrine()->getManager();
         $objQuery = $objEM->createQuery('
             SELECT
                 q,
@@ -51,10 +49,8 @@ class QuotesController extends AbstractController
         ]);
     }
 
-    public function quotesVotesAction()
+    public function quotesVotesAction(EntityManagerInterface $objEM)
     {
-        /** @var EntityManagerInterface $objEM */
-        $objEM = $this->getDoctrine()->getManager();
         $objQuery = $objEM->createQuery('
             SELECT
                 q,

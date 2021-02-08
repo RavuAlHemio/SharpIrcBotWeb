@@ -2,8 +2,10 @@
 
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\CounterEntry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class CountersController extends AbstractController
 {
@@ -124,10 +126,8 @@ class CountersController extends AbstractController
             EXTRACT(MONTH FROM happened_timestamp)
     ';
 
-    public function overviewAction()
+    public function overviewAction(EntityManagerInterface $objEM)
     {
-        $objEM = $this->getDoctrine()->getManager();
-
         $objQuery = $objEM->createQuery(static::QUERY_GET_ALL_COUNTER_VALUES);
         $arrCommandsAndCounts = $objQuery->getResult();
 
@@ -172,10 +172,8 @@ class CountersController extends AbstractController
         ]);
     }
 
-    public function detailsAction($strCommand)
+    public function detailsAction($strCommand, EntityManagerInterface $objEM)
     {
-        $objEM = $this->getDoctrine()->getManager();
-
         $objQuery = $objEM->createQuery(static::QUERY_GET_PER_USER_COUNT_BY_COMMAND);
         $objQuery->setParameter('command', $strCommand);
         $arrUsersAndCounts = $objQuery->getResult();
