@@ -1,4 +1,13 @@
 services:
-  RavuAlHemio\SharpIrcBotWebBundle\Controller\:
+  RavuAlHemio\SharpIrcBotWebBundle\Controller\CountersController:
+    bind:
+      $objEM: '@doctrine.orm.default_entity_manager'
+  RavuAlHemio\SharpIrcBotWebBundle\Controller\NickMappingController:
+    bind:
+      $objEM: '@doctrine.orm.default_entity_manager'
+  RavuAlHemio\SharpIrcBotWebBundle\Controller\QuotesController:
+    bind:
+      $objEM: '@doctrine.orm.default_entity_manager'
+  RavuAlHemio\SharpIrcBotWebBundle\Controller\ThanksController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
