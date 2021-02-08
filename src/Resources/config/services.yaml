@@ -9,17 +9,14 @@ services:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
       $objTwig: '@twig'
-      $objRouter: '@router.default'
     tags: ['controller.service_arguments']
   RavuAlHemio\SharpIrcBotWebBundle\Controller\QuotesController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
       $objTwig: '@twig'
-      $objRouter: '@router.default'
     tags: ['controller.service_arguments']
   RavuAlHemio\SharpIrcBotWebBundle\Controller\ThanksController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
       $objTwig: '@twig'
-      $objRouter: '@router.default'
     tags: ['controller.service_arguments']

@@ -3,11 +3,12 @@
 namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Twig\Environment;
 
 
-class ThanksController
+class ThanksController extends BaseController
 {
-    public function thanksGridAction(EntityManagerInterface $objEM)
+    public function thanksGridAction(EntityManagerInterface $objEM, Environment $objTwig)
     {
         $objQuery = $objEM->createQuery('
             SELECT
@@ -72,11 +73,15 @@ class ThanksController
             $intTotalSum += $intThankCount;
         }
 
-        return $this->render('@RavuAlHemioSharpIrcBotWeb/thanks/thanksgrid.html.twig', [
-            'thankers_thankees_counts' => $arrThankersToThankeesToCounts,
-            'thankers_totals' => $arrThankersToTotalCounts,
-            'thankees_totals' => $arrThankeesToTotalCounts,
-            'grand_total' => $intTotalSum
-        ]);
+        return $this->render(
+            $objTwig,
+            '@RavuAlHemioSharpIrcBotWeb/thanks/thanksgrid.html.twig',
+            [
+                'thankers_thankees_counts' => $arrThankersToThankeesToCounts,
+                'thankers_totals' => $arrThankersToTotalCounts,
+                'thankees_totals' => $arrThankeesToTotalCounts,
+                'grand_total' => $intTotalSum
+            ]
+        );
     }
 }
