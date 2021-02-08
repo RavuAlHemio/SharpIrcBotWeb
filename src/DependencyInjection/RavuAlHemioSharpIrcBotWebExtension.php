@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 
-class SharpIrcBotWebExtension extends Extension
+class RavuAlHemioSharpIrcBotWebExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
