@@ -4,6 +4,7 @@ namespace RavuAlHemio\SharpIrcBotWebBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use RavuAlHemio\SharpIrcBotWebBundle\Entity\CounterEntry;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 
