@@ -2,16 +2,16 @@ services:
   RavuAlHemio\SharpIrcBotWebBundle\Controller\CountersController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
-    tags: ['controller.service_arguments']
+    tags: ['controller.service_subscriber', 'controller.service_arguments']
   RavuAlHemio\SharpIrcBotWebBundle\Controller\NickMappingController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
-    tags: ['controller.service_arguments']
+    tags: ['controller.service_subscriber', 'controller.service_arguments']
   RavuAlHemio\SharpIrcBotWebBundle\Controller\QuotesController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
-    tags: ['controller.service_arguments']
+    tags: ['controller.service_subscriber', 'controller.service_arguments']
   RavuAlHemio\SharpIrcBotWebBundle\Controller\ThanksController:
     bind:
       $objEM: '@doctrine.orm.default_entity_manager'
-    tags: ['controller.service_arguments']
+    tags: ['controller.service_subscriber', 'controller.service_arguments']
