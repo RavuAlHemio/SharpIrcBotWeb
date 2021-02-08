@@ -1,0 +1,4 @@
+services:
+  RavuAlHemio\SharpIrcBotWebBundle\Controller\:
+    bind:
+      $objEM: '@doctrine.orm.default_entity_manager'
